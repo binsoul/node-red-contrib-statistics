@@ -1,0 +1,33 @@
+{
+  "binsoul-statistics": {
+    "label": {
+      "outputMethod": "Output method",
+      "slotMethod": "Slot method",
+      "slotResolutionNumber": "Slot resolution",
+      "slotResolutionUnit": "Slot resolution unit",
+      "slotCount": "Number of slots",
+      "interpolation": "Interpolation",
+      "output1Frequency": "Output 1 frequency",
+      "output2Frequency": "Output 2 frequency"
+    },
+    "option": {
+      "resolution": {
+        "seconds": "Seconds",
+        "minutes": "Minutes"
+      },
+      "method": {
+        "median": "Median",
+        "mean": "Mean"
+      },
+      "interpolation": {
+        "none": "No interpolation",
+        "stepAfter": "Step after"
+      },
+      "outputMode": {
+        "always": "Always",
+        "changes": "If value has changed",
+        "never": "Never"
+      }
+    }
+  }
+}

@@ -1,0 +1,154 @@
+<script type="text/javascript">
+    RED.nodes.registerType('binsoul-statistics', {
+        category: 'function',
+        color: '#A6BBCF',
+        defaults: {
+            outputMethod: {
+                value: 'mean',
+                required: true,
+            },
+            slotCount: {
+                value: '15',
+                required: true,
+                validate: RED.validators.number(),
+            },
+            slotResolutionNumber: {
+                value: '1',
+                required: true,
+                validate: RED.validators.number(),
+            },
+            slotResolutionUnit: {
+                value: 'minutes',
+                required: true,
+            },
+            slotMethod: {
+                value: 'mean',
+                required: true,
+            },
+            interpolation: {
+                value: 'stepAfter',
+                required: true,
+            },
+            output1Frequency: {
+                value: 'changes',
+                required: true,
+            },
+            output2Frequency: {
+                value: 'never',
+                required: true,
+            },
+            name: {value: ''},
+            outputs: {value: 1},
+        },
+        inputs: 1,
+        icon: 'font-awesome/fa-list-ol',
+        label: function() {
+            const duration = this.slotCount * this.slotResolutionNumber;
+            const unitName = this._('binsoul-statistics.option.resolution.' + this.slotResolutionUnit);
+            const methodName = this._('binsoul-statistics.option.method.' + this.outputMethod);
+            return this.name || `${methodName} (${duration} ${unitName})`;
+        },
+        labelStyle: function() {
+            return this.name ? 'node_label_italic' : '';
+        },
+        paletteLabel: 'statistics',
+        inputLabels: 'Incoming message',
+        outputLabels: ['Number output', 'Object output'],
+        oneditprepare: function() {
+            let node = this;
+            node.outputs = $('#node-input-output2Frequency').val() !== 'never' ? 2 : 1;
+            $('#node-input-output2Frequency').change(function() {
+                node.outputs = this.value !== 'never' ? 2 : 1;
+            });
+        },
+        oneditsave: function() {
+            let node = this;
+            node.outputs = $('#node-input-output2Frequency').val() !== 'never' ? 2 : 1;
+        },
+    });
+</script>
+
+<script type="text/html" data-template-name="binsoul-statistics">
+    <div class="form-row" data-i18n="[title]binsoul-statistics.label.outputMethod">
+        <label for="node-input-outputMethod">
+            <span data-i18n="binsoul-statistics.label.outputMethod"></span>
+        </label>
+        <select id="node-input-outputMethod">
+            <option value="mean" data-i18n="binsoul-statistics.option.method.mean"></option>
+            <option value="median" data-i18n="binsoul-statistics.option.method.median"></option>
+        </select>
+    </div>
+
+    <div class="form-row" data-i18n="[title]binsoul-statistics.label.slotResolutionNumber">
+        <label for="node-input-slotResolutionNumber">
+            <span data-i18n="binsoul-statistics.label.slotResolutionNumber"></span>
+        </label>
+        <div style="display: inline-flex;gap: 10px;width: 70%;">
+            <input type="number" min="1" id="node-input-slotResolutionNumber">
+            <select id="node-input-slotResolutionUnit" data-i18n="[title]binsoul-statistics.label.slotResolutionUnit">
+                <option value="seconds" data-i18n="binsoul-statistics.option.resolution.seconds"></option>
+                <option value="minutes" data-i18n="binsoul-statistics.option.resolution.minutes"></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row" data-i18n="[title]binsoul-statistics.label.slotCount">
+        <label for="node-input-slotCount">
+            <span data-i18n="binsoul-statistics.label.slotCount"></span>
+        </label>
+        <input type="number" min="2" id="node-input-slotCount">
+    </div>
+
+    <div class="form-row" data-i18n="[title]binsoul-statistics.label.slotMethod">
+        <label for="node-input-slotMethod">
+            <span data-i18n="binsoul-statistics.label.slotMethod"></span>
+        </label>
+        <select id="node-input-slotMethod">
+            <option value="mean" data-i18n="binsoul-statistics.option.method.mean"></option>
+            <option value="median" data-i18n="binsoul-statistics.option.method.median"></option>
+        </select>
+    </div>
+
+    <div class="form-row" data-i18n="[title]binsoul-statistics.label.interpolation">
+        <label for="node-input-interpolation">
+            <span data-i18n="binsoul-statistics.label.interpolation"></span>
+        </label>
+        <select id="node-input-interpolation">
+            <option value="none" data-i18n="binsoul-statistics.option.interpolation.none"></option>
+            <option value="stepAfter" data-i18n="binsoul-statistics.option.interpolation.stepAfter"></option>
+        </select>
+    </div>
+
+    <div class="form-row" data-i18n="[title]binsoul-statistics.label.output1Frequency">
+        <label for="node-input-output1Frequency">
+            <span data-i18n="binsoul-statistics.label.output1Frequency"></span>
+        </label>
+        <select id="node-input-output1Frequency">
+            <option value="always" data-i18n="binsoul-statistics.option.outputMode.always"></option>
+            <option value="changes" data-i18n="binsoul-statistics.option.outputMode.changes"></option>
+        </select>
+    </div>
+
+    <div class="form-row" data-i18n="[title]binsoul-statistics.label.output2Frequency">
+        <label for="node-input-output2Frequency">
+            <span data-i18n="binsoul-statistics.label.output2Frequency"></span>
+        </label>
+        <select id="node-input-output2Frequency">
+            <option value="always" data-i18n="binsoul-statistics.option.outputMode.always"></option>
+            <option value="changes" data-i18n="binsoul-statistics.option.outputMode.changes"></option>
+            <option value="never" data-i18n="binsoul-statistics.option.outputMode.never"></option>
+        </select>
+    </div>
+
+    <div class="form-row" data-i18n="[title]node-red:common.label.name">
+        <label for="node-input-name">
+            <i class="fa fa-tag"></i>
+            <span data-i18n="node-red:common.label.name"></span>
+        </label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="binsoul-statistics">
+
+</script>

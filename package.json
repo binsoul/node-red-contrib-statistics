@@ -1,0 +1,36 @@
+{
+    "name": "@binsoul/node-red-contrib-statistics",
+    "version": "0.0.1",
+    "description": "Perform statistical operations on a configurable duration of incoming data.",
+    "keywords": [
+        "node-red",
+        "statistics"
+    ],
+    "author": {
+        "name": "Sebastian Mößler",
+        "email": "s.moeszler@binsoul.de"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/binsoul/node-red-contrib-statistics/issues"
+    },
+    "homepage": "https://github.com/binsoul/node-red-contrib-statistics",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/binsoul/node-red-contrib-statistics.git"
+    },
+    "node-red": {
+        "nodes": {
+            "binsoul-statistics": "src/statistics.js"
+        }
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "files": [
+        "src/*",
+        "package.json",
+        "README.md",
+        "LICENSE.md"
+    ]
+}
