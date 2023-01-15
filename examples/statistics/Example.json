@@ -1,0 +1,127 @@
+[
+    {
+        "id": "acc3454072c27074",
+        "type": "tab",
+        "label": "Example",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "fec6c8f0051d6e85",
+        "type": "binsoul-statistics",
+        "z": "acc3454072c27074",
+        "outputMethod": "mean",
+        "slotCount": "60",
+        "slotResolutionNumber": "1",
+        "slotResolutionUnit": "seconds",
+        "slotMethod": "mean",
+        "interpolation": "stepAfter",
+        "output1Frequency": "changes",
+        "output2Frequency": "always",
+        "name": "",
+        "outputs": 2,
+        "x": 650,
+        "y": 180,
+        "wires": [
+            [
+                "0f5eb33110dc9be8"
+            ],
+            [
+                "1206287f8e4807d5"
+            ]
+        ]
+    },
+    {
+        "id": "0f5eb33110dc9be8",
+        "type": "debug",
+        "z": "acc3454072c27074",
+        "name": "calculated value",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 920,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "a31cd8f8b98bafa5",
+        "type": "inject",
+        "z": "acc3454072c27074",
+        "name": "0 or 1 every 3 seconds",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "0 or 1",
+        "payload": "$floor($random()*2)",
+        "payloadType": "jsonata",
+        "x": 350,
+        "y": 180,
+        "wires": [
+            [
+                "fec6c8f0051d6e85"
+            ]
+        ]
+    },
+    {
+        "id": "1206287f8e4807d5",
+        "type": "debug",
+        "z": "acc3454072c27074",
+        "name": "object",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "e62b44a6f6bad697",
+        "type": "inject",
+        "z": "acc3454072c27074",
+        "name": "between 1 and 100",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "between 1 and 100",
+        "payload": "1+$floor($random()*100)",
+        "payloadType": "jsonata",
+        "x": 330,
+        "y": 240,
+        "wires": [
+            [
+                "fec6c8f0051d6e85"
+            ]
+        ]
+    }
+]
