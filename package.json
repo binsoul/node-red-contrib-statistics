@@ -23,6 +23,7 @@
     "url": "https://github.com/binsoul/node-red-contrib-statistics.git"
   },
   "node-red": {
+    "version": ">=2.0.0",
     "nodes": {
       "binsoul-statistics": "dist/statistics/Node.js"
     }
@@ -67,5 +68,8 @@
   },
   "dependencies": {
     "simple-statistics": "^7.8.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }
