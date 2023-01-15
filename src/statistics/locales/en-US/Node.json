@@ -1,5 +1,9 @@
 {
   "binsoul-statistics": {
+    "status": {
+      "noEvents": "no events",
+      "invalidPayload": "invalid payload"
+    },
     "label": {
       "outputMethod": "Output method",
       "slotMethod": "Slot method",
@@ -16,8 +20,24 @@
         "minutes": "Minutes"
       },
       "method": {
+        "geometricMean": "Geometric mean",
+        "harmonicMean": "Harmonic mean",
+        "interquartileRange": "Interquartile range",
+        "max": "Maximum",
+        "mean": "Mean",
         "median": "Median",
-        "mean": "Mean"
+        "medianAbsoluteDeviation": "Median absolute deviation",
+        "min": "Minimum",
+        "mode": "Mode",
+        "product": "Product",
+        "rootMeanSquare": "Root mean square",
+        "sampleKurtosis": "Sample kurtosis",
+        "sampleSkewness": "Sample skewness",
+        "sampleStandardDeviation": "Sample standard deviation",
+        "standardDeviation": "Standard deviation",
+        "sum": "Sum",
+        "uniqueCount": "Unique count",
+        "variance": "Variance"
       },
       "interpolation": {
         "none": "No interpolation",
