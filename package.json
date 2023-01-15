@@ -58,7 +58,7 @@
     "concurrently": "^7.6.0",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
-    "glob": "^8.1.0",
+    "glob": "^7.1.7",
     "node-red": "^3.0.2",
     "nodemon": "^2.0.20",
     "onchange": "^7.1.0",
