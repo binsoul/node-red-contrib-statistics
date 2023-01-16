@@ -14,8 +14,7 @@ const isNumeric = function(str: any) {
         return false;
     }
 
-    //@ts-ignore
-    return ! isNaN(str) && ! isNaN(parseFloat(str));
+    return ! isNaN(<number>(<unknown>str)) && ! isNaN(parseFloat(str));
 };
 
 const nodeInitializer: NodeInitializer = (RED): void => {
