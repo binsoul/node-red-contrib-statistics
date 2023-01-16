@@ -1,9 +1,9 @@
 import type {Node, NodeInitializer, NodeMessage} from 'node-red';
-import type {Configuration} from './Configuration';
+import type {UserConfiguration} from './UserConfiguration';
 
 import {Storage} from './Storage';
-import {buildMethod} from './MethodFactory';
-import {buildInterpolator} from './InterpolatorFactory';
+import type {HistoryItem} from './HistoryItem';
+import {buildConfiguration} from './ConfigurationBuilder';
 
 const isNumeric = function(str: any) {
     if (typeof str === 'number') {
@@ -18,24 +18,13 @@ const isNumeric = function(str: any) {
 };
 
 const nodeInitializer: NodeInitializer = (RED): void => {
-    function NodeConstructor(this: Node, config: Configuration): void {
-        RED.nodes.createNode(this, config);
+    function NodeConstructor(this: Node, userConfiguration: UserConfiguration): void {
+        RED.nodes.createNode(this, userConfiguration);
 
-        let numberOfSlots = Number(config.slotCount);
-        let resolutionInMs = Number(config.slotResolutionNumber) * 1000;
-        if (config.slotResolutionUnit === 'minutes') {
-            resolutionInMs *= 60;
-        }
+        const configuration = buildConfiguration(userConfiguration);
 
-        let outputMethodCode = config.outputMethod;
-        let outputMethod = buildMethod(config.outputMethod);
-        let slotMethod = buildMethod(config.slotMethod);
-        let interpolator = buildInterpolator(config.interpolation);
-        let output1Frequency = config.output1Frequency;
-        let output2Frequency = config.output2Frequency;
-
-        let storageByTopic = new Map();
-        let historyByTopic = new Map();
+        let storageByTopic = new Map<string, Storage>();
+        let historyByTopic = new Map<string, HistoryItem>();
 
         let node = this;
         node.status({
@@ -62,44 +51,54 @@ const nodeInitializer: NodeInitializer = (RED): void => {
             let now = new Date().getTime();
             let topic = RED.util.getMessageProperty(msg, 'topic') || 'topic';
 
-            let storage;
+            let storage = null;
             if (storageByTopic.has(topic.toLowerCase())) {
                 storage = storageByTopic.get(topic.toLowerCase());
-            } else {
-                storage = new Storage(numberOfSlots, resolutionInMs, slotMethod);
+            }
+
+            if (storage === null || typeof storage === 'undefined') {
+                storage = new Storage(configuration.slotCount, configuration.slotResolution, configuration.slotMethod);
                 storageByTopic.set(topic, storage);
             }
 
             storage.addEvent(payload, now);
 
             let coordinates = storage.getCoordinates(now);
-            let interpolatedCoordinates = interpolator(coordinates, numberOfSlots);
-            let outputValue = outputMethod(interpolatedCoordinates);
+            let interpolatedCoordinates = configuration.interpolator(coordinates, configuration.slotCount);
+            let outputValue = configuration.outputMethod(interpolatedCoordinates);
             let statistics = storage.getStatistics();
 
-            let previousOutputValue = null;
+            let history = null;
             if (historyByTopic.has(topic.toLowerCase())) {
-                previousOutputValue = historyByTopic.get(topic.toLowerCase());
+                history = historyByTopic.get(topic.toLowerCase());
             }
 
-            let isChanged = previousOutputValue !== outputValue;
-            historyByTopic.set(topic.toLowerCase(), outputValue);
+            let isChanged = true;
+            if (history !== null && typeof history !== 'undefined') {
+                isChanged = history.output !== outputValue;
+            }
+
+            historyByTopic.set(topic.toLowerCase(), {
+                timestamp: now,
+                input: msg,
+                output: outputValue,
+            });
 
             let output: Array<NodeMessage | null> = [null, null];
 
-            if (output1Frequency === 'always' || (output1Frequency === 'changes' && isChanged)) {
+            if (configuration.output1Frequency === 'always' || (configuration.output1Frequency === 'changes' && isChanged)) {
                 let msg1 = RED.util.cloneMessage(msg);
                 msg1.payload = outputValue;
                 output[0] = msg1;
             }
 
-            if (output2Frequency === 'always' || (output2Frequency === 'changes' && isChanged)) {
+            if (configuration.output2Frequency === 'always' || (configuration.output2Frequency === 'changes' && isChanged)) {
                 let baseMsg = {
                     timestamp: now,
                     value: payload,
                 };
 
-                RED.util.setObjectProperty(baseMsg, outputMethodCode, outputValue, false);
+                RED.util.setObjectProperty(baseMsg, configuration.outputMethodCode, outputValue, false);
 
                 let msg2 = RED.util.cloneMessage(msg);
                 msg2.payload = Object.assign(baseMsg, statistics);

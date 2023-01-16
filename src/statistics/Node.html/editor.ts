@@ -1,9 +1,9 @@
 import type {EditorNodeProperties, EditorRED} from 'node-red';
-import type {ConfigurationOptions} from '../Configuration';
+import type {UserConfigurationOptions} from '../UserConfiguration';
 
 declare const RED: EditorRED;
 
-interface NodeEditorProperties extends EditorNodeProperties, ConfigurationOptions {
+interface NodeEditorProperties extends EditorNodeProperties, UserConfigurationOptions {
     outputs: number;
 }
 
@@ -51,7 +51,7 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
     inputs: 1,
     icon: 'font-awesome/fa-list-ol',
     label: function() {
-        const duration = this.slotCount * this.slotResolutionNumber;
+        const duration = (this.slotCount || 15) * (this.slotResolutionNumber || 1);
         const unitName = this._('binsoul-statistics.option.resolution.' + this.slotResolutionUnit);
         const methodName = this._('binsoul-statistics.option.method.' + this.outputMethod);
         return this.name || `${methodName} (${duration} ${unitName})`;
@@ -64,8 +64,9 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
     outputLabels: ['Number output', 'Object output'],
     oneditprepare: function() {
         let node = this;
-        node.outputs = $('#node-input-output2Frequency').val() !== 'never' ? 2 : 1;
-        $('#node-input-output2Frequency').on('change', function() {
+        let output2FrequencyInput = $('#node-input-output2Frequency');
+        node.outputs = output2FrequencyInput.val() !== 'never' ? 2 : 1;
+        output2FrequencyInput.on('change', function() {
             node.outputs = (<HTMLInputElement>this).value !== 'never' ? 2 : 1;
         });
     },
