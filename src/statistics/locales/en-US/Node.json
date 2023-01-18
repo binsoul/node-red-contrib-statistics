@@ -2,7 +2,13 @@
   "binsoul-statistics": {
     "status": {
       "noEvents": "no events",
-      "invalidPayload": "invalid payload"
+      "invalidInputValue": "invalid input value"
+    },
+    "group": {
+      "input": "Input",
+      "output1": "Output 1",
+      "output2": "Output 2",
+      "ui": "UI"
     },
     "label": {
       "outputMethod": "Output method",
@@ -12,7 +18,10 @@
       "slotCount": "Number of slots",
       "interpolation": "Interpolation",
       "output1Frequency": "Output 1 frequency",
-      "output2Frequency": "Output 2 frequency"
+      "output2Frequency": "Output 2 frequency",
+      "inputValue": "Input value",
+      "output1Value": "Output 1 value",
+      "output2Value": "Output 2 value"
     },
     "option": {
       "resolution": {

@@ -45,6 +45,30 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
             value: 'never',
             required: true,
         },
+        inputValueProperty: {
+            value: 'payload',
+            required: true,
+        },
+        inputValueType: {
+            value: 'msg',
+            required: true,
+        },
+        output1ValueProperty: {
+            value: 'payload',
+            required: true,
+        },
+        output1ValueType: {
+            value: 'msg',
+            required: true,
+        },
+        output2ValueProperty: {
+            value: 'payload',
+            required: true,
+        },
+        output2ValueType: {
+            value: 'msg',
+            required: true,
+        },
         name: {value: ''},
         outputs: {value: 1},
     },
@@ -68,6 +92,24 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
         node.outputs = output2FrequencyInput.val() !== 'never' ? 2 : 1;
         output2FrequencyInput.on('change', function() {
             node.outputs = (<HTMLInputElement>this).value !== 'never' ? 2 : 1;
+        });
+
+        $('#node-input-inputValueProperty').typedInput({
+            typeField: '#node-input-inputValueType',
+            types: ['msg', 'flow', 'global'],
+            default: 'msg',
+        });
+
+        $('#node-input-output1ValueProperty').typedInput({
+            typeField: '#node-input-output1ValueType',
+            types: ['msg', 'flow', 'global'],
+            default: 'msg',
+        });
+
+        $('#node-input-output2ValueProperty').typedInput({
+            typeField: '#node-input-output2ValueType',
+            types: ['msg', 'flow', 'global'],
+            default: 'msg',
         });
     },
     oneditsave: function() {

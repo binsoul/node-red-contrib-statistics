@@ -9,6 +9,12 @@ export interface UserConfigurationOptions {
     interpolation?: string,
     output1Frequency?: string,
     output2Frequency?: string
+    inputValueProperty?: string
+    inputValueType?: string
+    output1ValueProperty?: string
+    output1ValueType?: string
+    output2ValueProperty?: string
+    output2ValueType?: string
 }
 
 export interface UserConfiguration extends NodeDef, UserConfigurationOptions {

@@ -1,112 +1,149 @@
 <script type="text/html" data-template-name="binsoul-statistics">
-    <div class="form-row" data-i18n="[title]binsoul-statistics.label.outputMethod">
-        <label for="node-input-outputMethod">
-            <span data-i18n="binsoul-statistics.label.outputMethod"></span>
-        </label>
-        <select id="node-input-outputMethod">
-            <option value="mean" data-i18n="binsoul-statistics.option.method.mean"></option>
-            <option value="median" data-i18n="binsoul-statistics.option.method.median"></option>
-            <option value="min" data-i18n="binsoul-statistics.option.method.min"></option>
-            <option value="max" data-i18n="binsoul-statistics.option.method.max"></option>
-            <option value="sum" data-i18n="binsoul-statistics.option.method.sum"></option>
-            <option value="product" data-i18n="binsoul-statistics.option.method.product"></option>
-            <option value="uniqueCount" data-i18n="binsoul-statistics.option.method.uniqueCount"></option>
-            <option value="mode" data-i18n="binsoul-statistics.option.method.mode"></option>
-            <option value="geometricMean" data-i18n="binsoul-statistics.option.method.geometricMean"></option>
-            <option value="harmonicMean" data-i18n="binsoul-statistics.option.method.harmonicMean"></option>
-            <option value="rootMeanSquare" data-i18n="binsoul-statistics.option.method.rootMeanSquare"></option>
-            <option value="interquartileRange" data-i18n="binsoul-statistics.option.method.interquartileRange"></option>
-            <option value="variance" data-i18n="binsoul-statistics.option.method.variance"></option>
-            <option value="standardDeviation" data-i18n="binsoul-statistics.option.method.standardDeviation"></option>
-            <option value="medianAbsoluteDeviation" data-i18n="binsoul-statistics.option.method.medianAbsoluteDeviation"></option>
-            <option value="sampleKurtosis" data-i18n="binsoul-statistics.option.method.sampleKurtosis"></option>
-            <option value="sampleSkewness" data-i18n="binsoul-statistics.option.method.sampleSkewness"></option>
-            <option value="sampleStandardDeviation" data-i18n="binsoul-statistics.option.method.sampleStandardDeviation"></option>
-        </select>
-    </div>
-
-    <div class="form-row" data-i18n="[title]binsoul-statistics.label.slotResolutionNumber">
-        <label for="node-input-slotResolutionNumber">
-            <span data-i18n="binsoul-statistics.label.slotResolutionNumber"></span>
-        </label>
-        <div style="display: inline-flex;gap: 10px;width: 70%;">
-            <input type="number" min="1" id="node-input-slotResolutionNumber">
-            <select id="node-input-slotResolutionUnit" data-i18n="[title]binsoul-statistics.label.slotResolutionUnit">
-                <option value="seconds" data-i18n="binsoul-statistics.option.resolution.seconds"></option>
-                <option value="minutes" data-i18n="binsoul-statistics.option.resolution.minutes"></option>
+    <fieldset>
+        <div class="form-row" data-i18n="[title]binsoul-statistics.label.outputMethod">
+            <label for="node-input-outputMethod">
+                <span data-i18n="binsoul-statistics.label.outputMethod"></span>
+            </label>
+            <select id="node-input-outputMethod">
+                <option value="mean" data-i18n="binsoul-statistics.option.method.mean"></option>
+                <option value="median" data-i18n="binsoul-statistics.option.method.median"></option>
+                <option value="min" data-i18n="binsoul-statistics.option.method.min"></option>
+                <option value="max" data-i18n="binsoul-statistics.option.method.max"></option>
+                <option value="sum" data-i18n="binsoul-statistics.option.method.sum"></option>
+                <option value="product" data-i18n="binsoul-statistics.option.method.product"></option>
+                <option value="uniqueCount" data-i18n="binsoul-statistics.option.method.uniqueCount"></option>
+                <option value="mode" data-i18n="binsoul-statistics.option.method.mode"></option>
+                <option value="geometricMean" data-i18n="binsoul-statistics.option.method.geometricMean"></option>
+                <option value="harmonicMean" data-i18n="binsoul-statistics.option.method.harmonicMean"></option>
+                <option value="rootMeanSquare" data-i18n="binsoul-statistics.option.method.rootMeanSquare"></option>
+                <option value="interquartileRange" data-i18n="binsoul-statistics.option.method.interquartileRange"></option>
+                <option value="variance" data-i18n="binsoul-statistics.option.method.variance"></option>
+                <option value="standardDeviation" data-i18n="binsoul-statistics.option.method.standardDeviation"></option>
+                <option value="medianAbsoluteDeviation" data-i18n="binsoul-statistics.option.method.medianAbsoluteDeviation"></option>
+                <option value="sampleKurtosis" data-i18n="binsoul-statistics.option.method.sampleKurtosis"></option>
+                <option value="sampleSkewness" data-i18n="binsoul-statistics.option.method.sampleSkewness"></option>
+                <option value="sampleStandardDeviation" data-i18n="binsoul-statistics.option.method.sampleStandardDeviation"></option>
             </select>
         </div>
-    </div>
 
-    <div class="form-row" data-i18n="[title]binsoul-statistics.label.slotCount">
-        <label for="node-input-slotCount">
-            <span data-i18n="binsoul-statistics.label.slotCount"></span>
-        </label>
-        <input type="number" min="2" id="node-input-slotCount">
-    </div>
+        <div class="form-row" data-i18n="[title]binsoul-statistics.label.slotResolutionNumber">
+            <label for="node-input-slotResolutionNumber">
+                <span data-i18n="binsoul-statistics.label.slotResolutionNumber"></span>
+            </label>
+            <div style="display: inline-flex;gap: 10px;width: 70%;">
+                <input type="number" min="1" id="node-input-slotResolutionNumber">
+                <select id="node-input-slotResolutionUnit" data-i18n="[title]binsoul-statistics.label.slotResolutionUnit">
+                    <option value="seconds" data-i18n="binsoul-statistics.option.resolution.seconds"></option>
+                    <option value="minutes" data-i18n="binsoul-statistics.option.resolution.minutes"></option>
+                </select>
+            </div>
+        </div>
 
-    <div class="form-row" data-i18n="[title]binsoul-statistics.label.slotMethod">
-        <label for="node-input-slotMethod">
-            <span data-i18n="binsoul-statistics.label.slotMethod"></span>
-        </label>
-        <select id="node-input-slotMethod">
-            <option value="mean" data-i18n="binsoul-statistics.option.method.mean"></option>
-            <option value="median" data-i18n="binsoul-statistics.option.method.median"></option>
-            <option value="min" data-i18n="binsoul-statistics.option.method.min"></option>
-            <option value="max" data-i18n="binsoul-statistics.option.method.max"></option>
-            <option value="sum" data-i18n="binsoul-statistics.option.method.sum"></option>
-            <option value="product" data-i18n="binsoul-statistics.option.method.product"></option>
-            <option value="uniqueCount" data-i18n="binsoul-statistics.option.method.uniqueCount"></option>
-            <option value="mode" data-i18n="binsoul-statistics.option.method.mode"></option>
-            <option value="geometricMean" data-i18n="binsoul-statistics.option.method.geometricMean"></option>
-            <option value="harmonicMean" data-i18n="binsoul-statistics.option.method.harmonicMean"></option>
-            <option value="rootMeanSquare" data-i18n="binsoul-statistics.option.method.rootMeanSquare"></option>
-            <option value="interquartileRange" data-i18n="binsoul-statistics.option.method.interquartileRange"></option>
-            <option value="variance" data-i18n="binsoul-statistics.option.method.variance"></option>
-            <option value="standardDeviation" data-i18n="binsoul-statistics.option.method.standardDeviation"></option>
-            <option value="medianAbsoluteDeviation" data-i18n="binsoul-statistics.option.method.medianAbsoluteDeviation"></option>
-            <option value="sampleKurtosis" data-i18n="binsoul-statistics.option.method.sampleKurtosis"></option>
-            <option value="sampleSkewness" data-i18n="binsoul-statistics.option.method.sampleSkewness"></option>
-            <option value="sampleStandardDeviation" data-i18n="binsoul-statistics.option.method.sampleStandardDeviation"></option>
-        </select>
-    </div>
+        <div class="form-row" data-i18n="[title]binsoul-statistics.label.slotCount">
+            <label for="node-input-slotCount">
+                <span data-i18n="binsoul-statistics.label.slotCount"></span>
+            </label>
+            <input type="number" min="2" id="node-input-slotCount">
+        </div>
 
-    <div class="form-row" data-i18n="[title]binsoul-statistics.label.interpolation">
-        <label for="node-input-interpolation">
-            <span data-i18n="binsoul-statistics.label.interpolation"></span>
-        </label>
-        <select id="node-input-interpolation">
-            <option value="none" data-i18n="binsoul-statistics.option.interpolation.none"></option>
-            <option value="stepAfter" data-i18n="binsoul-statistics.option.interpolation.stepAfter"></option>
-        </select>
-    </div>
+        <div class="form-row" data-i18n="[title]binsoul-statistics.label.slotMethod">
+            <label for="node-input-slotMethod">
+                <span data-i18n="binsoul-statistics.label.slotMethod"></span>
+            </label>
+            <select id="node-input-slotMethod">
+                <option value="mean" data-i18n="binsoul-statistics.option.method.mean"></option>
+                <option value="median" data-i18n="binsoul-statistics.option.method.median"></option>
+                <option value="min" data-i18n="binsoul-statistics.option.method.min"></option>
+                <option value="max" data-i18n="binsoul-statistics.option.method.max"></option>
+                <option value="sum" data-i18n="binsoul-statistics.option.method.sum"></option>
+                <option value="product" data-i18n="binsoul-statistics.option.method.product"></option>
+                <option value="uniqueCount" data-i18n="binsoul-statistics.option.method.uniqueCount"></option>
+                <option value="mode" data-i18n="binsoul-statistics.option.method.mode"></option>
+                <option value="geometricMean" data-i18n="binsoul-statistics.option.method.geometricMean"></option>
+                <option value="harmonicMean" data-i18n="binsoul-statistics.option.method.harmonicMean"></option>
+                <option value="rootMeanSquare" data-i18n="binsoul-statistics.option.method.rootMeanSquare"></option>
+                <option value="interquartileRange" data-i18n="binsoul-statistics.option.method.interquartileRange"></option>
+                <option value="variance" data-i18n="binsoul-statistics.option.method.variance"></option>
+                <option value="standardDeviation" data-i18n="binsoul-statistics.option.method.standardDeviation"></option>
+                <option value="medianAbsoluteDeviation" data-i18n="binsoul-statistics.option.method.medianAbsoluteDeviation"></option>
+                <option value="sampleKurtosis" data-i18n="binsoul-statistics.option.method.sampleKurtosis"></option>
+                <option value="sampleSkewness" data-i18n="binsoul-statistics.option.method.sampleSkewness"></option>
+                <option value="sampleStandardDeviation" data-i18n="binsoul-statistics.option.method.sampleStandardDeviation"></option>
+            </select>
+        </div>
 
-    <div class="form-row" data-i18n="[title]binsoul-statistics.label.output1Frequency">
-        <label for="node-input-output1Frequency">
-            <span data-i18n="binsoul-statistics.label.output1Frequency"></span>
-        </label>
-        <select id="node-input-output1Frequency">
-            <option value="always" data-i18n="binsoul-statistics.option.outputMode.always"></option>
-            <option value="changes" data-i18n="binsoul-statistics.option.outputMode.changes"></option>
-        </select>
-    </div>
+        <div class="form-row" data-i18n="[title]binsoul-statistics.label.interpolation">
+            <label for="node-input-interpolation">
+                <span data-i18n="binsoul-statistics.label.interpolation"></span>
+            </label>
+            <select id="node-input-interpolation">
+                <option value="none" data-i18n="binsoul-statistics.option.interpolation.none"></option>
+                <option value="stepAfter" data-i18n="binsoul-statistics.option.interpolation.stepAfter"></option>
+            </select>
+        </div>
+    </fieldset>
 
-    <div class="form-row" data-i18n="[title]binsoul-statistics.label.output2Frequency">
-        <label for="node-input-output2Frequency">
-            <span data-i18n="binsoul-statistics.label.output2Frequency"></span>
-        </label>
-        <select id="node-input-output2Frequency">
-            <option value="always" data-i18n="binsoul-statistics.option.outputMode.always"></option>
-            <option value="changes" data-i18n="binsoul-statistics.option.outputMode.changes"></option>
-            <option value="never" data-i18n="binsoul-statistics.option.outputMode.never"></option>
-        </select>
-    </div>
+    <fieldset>
+        <legend data-i18n="binsoul-statistics.group.input"></legend>
+        <div class="form-row" data-i18n="[title]binsoul-statistics.label.inputValue">
+            <label for="node-input-inputValueProperty">
+                <span data-i18n="binsoul-statistics.label.inputValue"></span>
+            </label>
+            <input type="hidden" id="node-input-inputValueType">
+            <input type="text" id="node-input-inputValueProperty">
+        </div>
+    </fieldset>
 
-    <div class="form-row" data-i18n="[title]node-red:common.label.name">
-        <label for="node-input-name">
-            <i class="fa fa-tag"></i>
-            <span data-i18n="node-red:common.label.name"></span>
-        </label>
-        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
-    </div>
+    <fieldset>
+        <legend data-i18n="binsoul-statistics.group.output1"></legend>
+        <div class="form-row" data-i18n="[title]binsoul-statistics.label.output1Frequency">
+            <label for="node-input-output1Frequency">
+                <span data-i18n="binsoul-statistics.label.output1Frequency"></span>
+            </label>
+            <select id="node-input-output1Frequency">
+                <option value="always" data-i18n="binsoul-statistics.option.outputMode.always"></option>
+                <option value="changes" data-i18n="binsoul-statistics.option.outputMode.changes"></option>
+            </select>
+        </div>
+
+        <div class="form-row" data-i18n="[title]binsoul-statistics.label.output1Value">
+            <label for="node-input-output1ValueProperty">
+                <span data-i18n="binsoul-statistics.label.output1Value"></span>
+            </label>
+            <input type="hidden" id="node-input-output1ValueType">
+            <input type="text" id="node-input-output1ValueProperty">
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend data-i18n="binsoul-statistics.group.output2"></legend>
+        <div class="form-row" data-i18n="[title]binsoul-statistics.label.output2Frequency">
+            <label for="node-input-output2Frequency">
+                <span data-i18n="binsoul-statistics.label.output2Frequency"></span>
+            </label>
+            <select id="node-input-output2Frequency">
+                <option value="always" data-i18n="binsoul-statistics.option.outputMode.always"></option>
+                <option value="changes" data-i18n="binsoul-statistics.option.outputMode.changes"></option>
+                <option value="never" data-i18n="binsoul-statistics.option.outputMode.never"></option>
+            </select>
+        </div>
+
+        <div class="form-row" data-i18n="[title]binsoul-statistics.label.output2Value">
+            <label for="node-input-output2ValueProperty">
+                <span data-i18n="binsoul-statistics.label.output2Value"></span>
+            </label>
+            <input type="hidden" id="node-input-output2ValueType">
+            <input type="text" id="node-input-output2ValueProperty">
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend data-i18n="binsoul-statistics.group.ui"></legend>
+        <div class="form-row" data-i18n="[title]node-red:common.label.name">
+            <label for="node-input-name">
+                <i class="fa fa-tag"></i>
+                <span data-i18n="node-red:common.label.name"></span>
+            </label>
+            <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+        </div>
+    </fieldset>
 </script>
