@@ -1,11 +1,13 @@
 import type {NodeMessage, NodeMessageInFlow} from 'node-red';
 import type {Action} from './Action';
-import type {Result} from './Result';
-import type {InputDefinition, InputItem} from './InputDefinition';
+import type {InputDefinition, InputValueDefinition} from './InputDefinition';
 import type {Output} from './Output';
 import type {Message} from './Message';
 import type {ActionFactory} from './ActionFactory';
 import type {Node, NodeAPI} from '@node-red/registry';
+import {Input} from './Input';
+import type {OutputValueDefinition} from './OutputDefinition';
+import type {OutputDefinition} from './OutputDefinition';
 
 interface InternalMessage extends Message {
     send: (message: NodeMessage | Array<NodeMessage | NodeMessage[] | null>) => void,
@@ -114,24 +116,27 @@ export class MessageHandler {
 
             let action: Action = possibleAction;
 
-            self.readInputValues(action.defineInputs(), message)
-                .then((values: Map<string, any>) => action.execute(values, message))
-                .then((result: Result) => self.writeOutputValues(result, message))
-                .then((result: Result) => self.sendMessages(result, message))
-                .then(function(result: Result) {
+            let inputDefinition = action.defineInput();
+            let outputDefinition = action.defineOutput();
+
+            self.readInputValues(inputDefinition, message)
+                .then((input: Input) => action.execute(input))
+                .then((output: Output) => self.writeOutputValues(outputDefinition, output))
+                .then((output: Output) => self.sendMessages(outputDefinition, output, message))
+                .then(function(output: Output) {
                     resolve();
-                    self.updateStatus(result);
+                    self.updateStatus(output);
                 })
                 .catch((error: Error) => reject(error));
         });
     };
 
-    private readInputValues(definition: InputDefinition, message: InternalMessage): Promise<Map<string, any>> {
+    private readInputValues(definition: InputDefinition, message: InternalMessage): Promise<Input> {
         const self = this;
         let promises = [];
 
         for (let [name, value] of definition.entries()) {
-            let generator = function(name: string, input: InputItem): Promise<any> {
+            let generator = function(name: string, input: InputValueDefinition): Promise<any> {
                 return new Promise<any>((resolve, reject) => {
                     self.RED.util.evaluateNodeProperty(input.property, input.source, self.node, message.data, (error: Error | null, value: any) => {
                         if (error) {
@@ -161,72 +166,62 @@ export class MessageHandler {
         }
 
         let allPromises = Promise.all(promises);
-        return new Promise<Map<string, any>>((resolve, reject) => {
+        return new Promise<Input>((resolve, reject) => {
             allPromises
                 .then((values: Array<[string, any]>) => {
-                    const result = new Map();
+                    const map = new Map();
                     for (let value of values) {
-                        result.set(value[0], value[1]);
+                        map.set(value[0], value[1]);
                     }
 
-                    resolve(result);
+                    resolve(new Input(map, message));
                 })
                 .catch((error) => reject(error));
         });
     };
 
-    private writeOutputValues(result: Result, message: InternalMessage): Promise<Result> {
+    private writeOutputValues(outputDefinition: OutputDefinition, output: Output): Promise<Output> {
         const self = this;
 
         let promises = [];
 
-        if (result.outputs === null) {
-            return Promise.resolve(result);
+        if (outputDefinition.size === 0) {
+            return Promise.resolve(output);
         }
 
-        for (let output of result.outputs) {
-            if (output === null) {
+        for (let [name, definition] of outputDefinition.entries()) {
+            let value = output.getValue(name);
+            if (typeof value === 'undefined') {
                 continue;
             }
 
-            let generator = function(output: Output, msg: NodeMessage): Promise<void> {
-                let message: NodeMessage = msg;
-                if (output.target === 'msg') {
-                    message = self.RED.util.cloneMessage(msg);
-                }
+            if (definition.target !== 'msg') {
+                let generator = function(definition: OutputValueDefinition, value: any): Promise<void> {
+                    return self.setOutputValue(value, definition.target, definition.property);
+                };
 
-                output.message = message;
+                promises.push(generator(definition, value));
+            }
+        }
 
-                return self.setOutputValue(output.value, output.target, output.property, output.message);
-            };
-
-            promises.push(generator(output, message.data));
+        if (promises.length === 0) {
+            return Promise.resolve(output);
         }
 
         let allPromises = Promise.all(promises);
-        return new Promise<Result>((resolve, reject) => {
+        return new Promise<Output>((resolve, reject) => {
             allPromises
-                .then(() => resolve(result))
+                .then(() => resolve(output))
                 .catch((error) => reject(error));
         });
     };
 
-    private setOutputValue(value: any, type: string, property: string, msg: NodeMessage) {
+    private setOutputValue(value: any, type: string, property: string): Promise<void> {
         const self = this;
 
         return new Promise<void>((resolve, reject) => {
             if (type === 'msg') {
-                try {
-                    if (! self.RED.util.setMessageProperty(msg, property, value, true)) {
-                        reject(new Error('Failed to set output value.'));
-
-                        return;
-                    }
-
-                    resolve();
-                } catch (error) {
-                    reject(error);
-                }
+                // handled by sendMessages
             } else if (type === 'flow' || type === 'global') {
                 let target = self.node.context()[type];
                 let callback = (err: Error) => {
@@ -256,31 +251,55 @@ export class MessageHandler {
         });
     }
 
-    private sendMessages(result: Result, message: InternalMessage): Result {
+    private sendMessages(outputDefinition: OutputDefinition, output: Output, message: InternalMessage): Output {
+        let self = this;
         let messages: Array<NodeMessage | null> | null = null;
-        if (result.outputs !== null) {
+
+        if (outputDefinition.size !== null) {
             messages = [];
-            for (let output of result.outputs) {
-                if (output === null || ! output.sendMessage) {
-                    messages.push(null);
+            for (let [name, definition] of outputDefinition.entries()) {
+                let value = output.getValue(name);
+
+                if (typeof value === 'undefined') {
+                    messages[definition.channel] = null;
                 } else {
-                    messages.push(output.message);
+                    if (definition.target === 'msg') {
+                        let clonedMessage = self.RED.util.cloneMessage(message.data);
+                        if (typeof clonedMessage._msgid !== 'undefined') {
+                            clonedMessage._msgid = self.RED.util.generateId();
+                        }
+
+                        if (! self.RED.util.setMessageProperty(clonedMessage, definition.property, value, true)) {
+                            throw new Error(`Failed to set message property "${definition.property}".`);
+                        }
+
+                        messages[definition.channel] = clonedMessage;
+                    } else {
+                        messages[definition.channel] = message.data;
+                    }
                 }
             }
         }
 
         if (messages !== null) {
-            message.send(messages);
+            let messageValues: Array<NodeMessage | null> = [];
+            for (let message of messages) {
+                messageValues.push(message);
+            }
+
+            message.send(messageValues);
         }
 
         message.done();
 
-        return result;
+        return output;
     };
 
-    private updateStatus(result: Result) {
-        if (result.nodeStatus !== null) {
-            this.node.status(result.nodeStatus);
+    private updateStatus(output: Output) {
+        let nodeStatus = output.getNodeStatus();
+
+        if (nodeStatus !== null) {
+            this.node.status(nodeStatus);
         }
     };
 }

@@ -1,4 +1,4 @@
-export interface InputItem {
+export interface InputValueDefinition {
     source: string,
     property: string,
     type: string,
@@ -6,5 +6,5 @@ export interface InputItem {
     default?: any
 }
 
-export class InputDefinition extends Map<string, InputItem> {
+export class InputDefinition extends Map<string, InputValueDefinition> {
 }

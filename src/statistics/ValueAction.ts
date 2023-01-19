@@ -1,10 +1,11 @@
 import type {Action} from './Processing/Action';
 import type {Configuration} from './Configuration';
-import {Storage} from './Storage';
 import type {HistoryItem} from './HistoryItem';
+import type {Input} from './Processing/Input';
+import {Storage} from './Storage';
 import {InputDefinition} from './Processing/InputDefinition';
-import type {Message} from './Processing/Message';
-import type {Result} from './Processing/Result';
+import {OutputDefinition} from './Processing/OutputDefinition';
+import {Output} from './Processing/Output';
 
 export class ValueAction implements Action {
     private readonly configuration: Configuration;
@@ -17,7 +18,7 @@ export class ValueAction implements Action {
         this.storage = new Storage(configuration.slotCount, configuration.slotResolution, configuration.slotMethod);
     }
 
-    defineInputs(): InputDefinition {
+    defineInput(): InputDefinition {
         const result = new InputDefinition();
 
         result.set('value', {
@@ -30,10 +31,30 @@ export class ValueAction implements Action {
         return result;
     }
 
-    execute(inputValues: Map<string, any>, message: Message): Result {
+    defineOutput(): OutputDefinition {
+        const result = new OutputDefinition();
+
+        result.set('value', {
+            target: this.configuration.output1ValueType,
+            property: this.configuration.output1ValueProperty,
+            type: 'number',
+            channel: 0,
+        });
+
+        result.set('object', {
+            target: this.configuration.output2ValueType,
+            property: this.configuration.output2ValueProperty,
+            type: 'object',
+            channel: 1,
+        });
+
+        return result;
+    }
+
+    execute(input: Input): Output {
         let configuration = this.configuration;
-        let timestamp = message.timestamp;
-        let inputValue = Number(inputValues.get('value'));
+        let timestamp = input.getMessage().timestamp;
+        let inputValue = input.getRequiredValue<number>('value');
 
         let storage = this.storage;
         this.storage.addEvent(inputValue, timestamp);
@@ -52,24 +73,13 @@ export class ValueAction implements Action {
             timestamp: timestamp,
             inputValue: inputValue,
             outputValue: outputValue,
-            msg: message.data,
+            msg: input.getMessage().data,
         };
 
-        let result: Result = {
-            outputs: [null, null],
-            nodeStatus: null,
-        };
+        let result = new Output();
 
         if (configuration.output1Frequency === 'always' || (configuration.output1Frequency === 'changes' && isChanged)) {
-            result.outputs = result.outputs || [null, null];
-
-            result.outputs[0] = {
-                target: configuration.output1ValueType,
-                property: configuration.output1ValueProperty,
-                value: outputValue,
-                sendMessage: true,
-                message: null,
-            };
+            result.setValue('value', outputValue);
         }
 
         if (configuration.output2Frequency === 'always' || (configuration.output2Frequency === 'changes' && isChanged)) {
@@ -79,28 +89,21 @@ export class ValueAction implements Action {
                 [configuration.outputMethodCode]: outputValue,
             };
 
-            result.outputs = result.outputs || [null, null];
-            result.outputs[1] = {
-                target: configuration.output2ValueType,
-                property: configuration.output2ValueProperty,
-                value: Object.assign(baseMsg, statistics),
-                sendMessage: true,
-                message: null,
-            };
+            result.setValue('object', Object.assign(statistics, baseMsg));
         }
 
         if (isChanged) {
-            result.nodeStatus = {
+            result.setNodeStatus({
                 fill: 'green',
                 shape: 'dot',
                 text: `[${statistics.count}] ${outputValue}`,
-            };
+            });
         } else {
-            result.nodeStatus = {
+            result.setNodeStatus({
                 fill: 'green',
                 shape: 'ring',
                 text: `[${statistics.count}] ${outputValue}`,
-            };
+            });
         }
 
         return result;

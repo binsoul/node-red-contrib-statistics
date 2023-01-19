@@ -1,8 +1,10 @@
 import type {InputDefinition} from './InputDefinition';
-import type {Message} from './Message';
-import type {Result} from './Result';
+import type {OutputDefinition} from './OutputDefinition';
+import type {Input} from './Input';
+import {Output} from './Output';
 
 export interface Action {
-    defineInputs: () => InputDefinition;
-    execute: (inputValues: Map<string, any>, message: Message) => Result;
+    defineInput: () => InputDefinition;
+    defineOutput: () => OutputDefinition;
+    execute: (input: Input) => Output;
 }
