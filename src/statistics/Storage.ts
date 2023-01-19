@@ -61,29 +61,12 @@ export class Storage {
         return result;
     }
 
-    getStatistics(): Record<'minimum' | 'maximum' | 'count', number | null> {
-        let minimum = null;
-        let maximum = null;
+    getEventCount(): number {
+        return this.events.length;
+    }
 
-        for (let n = 0; n < this.events.length; n++) {
-            let event = this.events[n];
-            if (typeof event === 'undefined') {
-                continue;
-            }
-
-            if (minimum === null || event.value < minimum) {
-                minimum = event.value;
-            }
-            if (maximum === null || event.value > maximum) {
-                maximum = event.value;
-            }
-        }
-
-        return {
-            minimum: minimum,
-            maximum: maximum,
-            count: this.events.length,
-        };
+    getHistoryCount(): number {
+        return this.history.length;
     }
 
     private prepareEvents(timestamp: number): void {

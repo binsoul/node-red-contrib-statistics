@@ -1,9 +1,15 @@
 import type {Configuration} from './Configuration';
-import {ValueAction} from './ValueAction';
+import {ValueAction} from './Action/ValueAction';
 import type {Message} from './Processing/Message';
 import type {Action} from './Processing/Action';
 import type {SetupResult} from './SetupResult';
 import type {ActionFactory as ActionFactoryInterface} from './Processing/ActionFactory';
+import {UpdateAction} from './Action/UpdateAction';
+import type {NodeMessageInFlow} from 'node-red';
+
+interface MessageData extends NodeMessageInFlow {
+    command?: string | undefined,
+}
 
 export class ActionFactory implements ActionFactoryInterface {
     private readonly configuration: Configuration;
@@ -14,9 +20,25 @@ export class ActionFactory implements ActionFactoryInterface {
     }
 
     build(message: Message): Action | null {
-        let topic = message.data.topic;
+        let data: MessageData = message.data;
+        let topic = data.topic;
         if (typeof topic === 'undefined' || ('' + topic).trim() === '') {
             return null;
+        }
+
+        let command = data.command;
+        if (typeof command !== 'undefined' && ('' + command).trim() !== '') {
+            switch (command.toLowerCase()) {
+                case 'update':
+                    const valueAction = this.actionsByTopic.get(topic.toLowerCase());
+                    if (typeof valueAction === 'undefined') {
+                        return null;
+                    }
+
+                    return new UpdateAction(this.configuration, valueAction);
+                default:
+                    return null;
+            }
         }
 
         let action = null;

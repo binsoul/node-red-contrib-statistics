@@ -152,12 +152,22 @@ export class MessageHandler {
                             }
 
                             if (definition.type === 'number') {
-                                if (! isNumeric(value)) {
-                                    reject(new Error(self.RED._('invalid input')));
-                                    return;
-                                }
+                                if (isNumeric(value)) {
+                                    value = Number(value);
+                                } else {
+                                    if (definition.required) {
+                                        let propertyName = definition.source;
+                                        if (definition.property.trim() !== '') {
+                                            propertyName += '.' + definition.property;
+                                        }
 
-                                value = Number(value);
+                                        reject(new Error(`Value of "${propertyName}" is not numeric.`));
+
+                                        return;
+                                    }
+
+                                    value = void 0;
+                                }
                             }
 
                             resolve([name, value]);
