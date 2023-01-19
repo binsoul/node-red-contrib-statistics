@@ -12,11 +12,11 @@ export class Configuration {
     outputMethodCode: string;
 
     inputValueProperty: string;
-    inputValueType: string;
+    inputValueSource: string;
     output1ValueProperty: string;
-    output1ValueType: string;
+    output1ValueTarget: string;
     output2ValueProperty: string;
-    output2ValueType: string;
+    output2ValueTarget: string;
 
     constructor(
         outputMethod: Method,
@@ -28,11 +28,11 @@ export class Configuration {
         output2Frequency: string = 'never',
         outputMethodCode: string = 'mean',
         inputValueProperty: string = 'payload',
-        inputValueType: string = 'msg',
+        inputValueSource: string = 'msg',
         output1ValueProperty: string = 'payload',
-        output1ValueType: string = 'msg',
+        output1ValueTarget: string = 'msg',
         output2ValueProperty: string = 'payload',
-        output2ValueType: string = 'msg',
+        output2ValueTarget: string = 'msg',
     ) {
         this.outputMethod = outputMethod;
         this.slotCount = slotCount;
@@ -43,10 +43,10 @@ export class Configuration {
         this.output2Frequency = output2Frequency;
         this.outputMethodCode = outputMethodCode;
         this.inputValueProperty = inputValueProperty;
-        this.inputValueType = inputValueType;
+        this.inputValueSource = inputValueSource;
         this.output1ValueProperty = output1ValueProperty;
-        this.output1ValueType = output1ValueType;
+        this.output1ValueTarget = output1ValueTarget;
         this.output2ValueProperty = output2ValueProperty;
-        this.output2ValueType = output2ValueType;
+        this.output2ValueTarget = output2ValueTarget;
     }
 }

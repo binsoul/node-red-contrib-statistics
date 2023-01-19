@@ -28,11 +28,11 @@ export function buildConfiguration(config: UserConfiguration): Configuration {
     let output1Frequency = getString(config.output1Frequency, 'changes');
     let output2Frequency = getString(config.output2Frequency, 'never');
     let inputValueProperty = getString(config.inputValueProperty, 'payload');
-    let inputValueType = getString(config.inputValueType, 'msg');
+    let inputValueSource = getString(config.inputValueSource, 'msg');
     let output1ValueProperty = getString(config.output1ValueProperty, 'payload');
-    let output1ValueType = getString(config.output1ValueType, 'msg');
+    let output1ValueTarget = getString(config.output1ValueTarget, 'msg');
     let output2ValueProperty = getString(config.output2ValueProperty, 'payload');
-    let output2ValueType = getString(config.output2ValueType, 'msg');
+    let output2ValueTarget = getString(config.output2ValueTarget, 'msg');
 
     return new Configuration(
         outputMethod,
@@ -44,10 +44,10 @@ export function buildConfiguration(config: UserConfiguration): Configuration {
         output2Frequency,
         outputMethodCode,
         inputValueProperty,
-        inputValueType,
+        inputValueSource,
         output1ValueProperty,
-        output1ValueType,
+        output1ValueTarget,
         output2ValueProperty,
-        output2ValueType,
+        output2ValueTarget,
     );
 }

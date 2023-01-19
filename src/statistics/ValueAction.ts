@@ -22,7 +22,7 @@ export class ValueAction implements Action {
         const result = new InputDefinition();
 
         result.set('value', {
-            source: this.configuration.inputValueType,
+            source: this.configuration.inputValueSource,
             property: this.configuration.inputValueProperty,
             type: 'number',
             required: true,
@@ -35,14 +35,14 @@ export class ValueAction implements Action {
         const result = new OutputDefinition();
 
         result.set('value', {
-            target: this.configuration.output1ValueType,
+            target: this.configuration.output1ValueTarget,
             property: this.configuration.output1ValueProperty,
             type: 'number',
             channel: 0,
         });
 
         result.set('object', {
-            target: this.configuration.output2ValueType,
+            target: this.configuration.output2ValueTarget,
             property: this.configuration.output2ValueProperty,
             type: 'object',
             channel: 1,

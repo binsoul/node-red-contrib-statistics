@@ -49,7 +49,7 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
             value: 'payload',
             required: true,
         },
-        inputValueType: {
+        inputValueSource: {
             value: 'msg',
             required: true,
         },
@@ -57,7 +57,7 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
             value: 'payload',
             required: true,
         },
-        output1ValueType: {
+        output1ValueTarget: {
             value: 'msg',
             required: true,
         },
@@ -65,7 +65,7 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
             value: 'payload',
             required: true,
         },
-        output2ValueType: {
+        output2ValueTarget: {
             value: 'msg',
             required: true,
         },
@@ -95,19 +95,19 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
         });
 
         $('#node-input-inputValueProperty').typedInput({
-            typeField: '#node-input-inputValueType',
+            typeField: '#node-input-inputValueSource',
             types: ['msg', 'flow', 'global'],
             default: 'msg',
         });
 
         $('#node-input-output1ValueProperty').typedInput({
-            typeField: '#node-input-output1ValueType',
+            typeField: '#node-input-output1ValueTarget',
             types: ['msg', 'flow', 'global'],
             default: 'msg',
         });
 
         $('#node-input-output2ValueProperty').typedInput({
-            typeField: '#node-input-output2ValueType',
+            typeField: '#node-input-output2ValueTarget',
             types: ['msg', 'flow', 'global'],
             default: 'msg',
         });

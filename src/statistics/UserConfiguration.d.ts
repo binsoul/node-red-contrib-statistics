@@ -10,11 +10,11 @@ export interface UserConfigurationOptions {
     output1Frequency?: string,
     output2Frequency?: string
     inputValueProperty?: string
-    inputValueType?: string
+    inputValueSource?: string
     output1ValueProperty?: string
-    output1ValueType?: string
+    output1ValueTarget?: string
     output2ValueProperty?: string
-    output2ValueType?: string
+    output2ValueTarget?: string
 }
 
 export interface UserConfiguration extends NodeDef, UserConfigurationOptions {
