@@ -1,7 +1,7 @@
 import type {Node, NodeInitializer} from 'node-red';
 import type {UserConfiguration} from './UserConfiguration';
 import {buildConfiguration} from './ConfigurationBuilder';
-import {ProcessorFactory} from './ProcessorFactory';
+import {ActionFactory} from './ActionFactory';
 import {MessageHandler} from './Processing/MessageHandler';
 
 const nodeInitializer: NodeInitializer = (RED): void => {
@@ -10,10 +10,10 @@ const nodeInitializer: NodeInitializer = (RED): void => {
         RED.nodes.createNode(node, userConfiguration);
 
         const configuration = buildConfiguration(userConfiguration);
-        const processorFactory = new ProcessorFactory(configuration);
-        const messageHandler = new MessageHandler(RED, node, processorFactory);
+        const actionFactory = new ActionFactory(configuration);
+        const messageHandler = new MessageHandler(RED, node, actionFactory);
 
-        const setupResult = processorFactory.setup();
+        const setupResult = actionFactory.setup();
         if (setupResult !== null) {
             if (setupResult.nodeStatus !== null) {
                 node.status(setupResult.nodeStatus);
@@ -21,7 +21,7 @@ const nodeInitializer: NodeInitializer = (RED): void => {
         }
 
         node.on('input', (msg, send, done) => messageHandler.handle(msg, send, done));
-        node.on('close', () => processorFactory.teardown());
+        node.on('close', () => actionFactory.teardown());
     }
 
     RED.nodes.registerType('binsoul-statistics', NodeConstructor);

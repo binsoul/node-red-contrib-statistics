@@ -1,12 +1,12 @@
-import type {Processor} from './Processing/Processor';
+import type {Action} from './Processing/Action';
 import type {Configuration} from './Configuration';
 import {Storage} from './Storage';
 import type {HistoryItem} from './HistoryItem';
-import type {InputDefinition} from './Processing/InputDefinition';
+import {InputDefinition} from './Processing/InputDefinition';
 import type {Message} from './Processing/Message';
-import type {ProcessingResult} from './Processing/ProcessingResult';
+import type {Result} from './Processing/Result';
 
-export class ValueProcessor implements Processor {
+export class ValueAction implements Action {
     private readonly configuration: Configuration;
 
     private readonly storage: Storage;
@@ -17,20 +17,23 @@ export class ValueProcessor implements Processor {
         this.storage = new Storage(configuration.slotCount, configuration.slotResolution, configuration.slotMethod);
     }
 
-    defineInputs(): Array<InputDefinition> {
-        return [
-            {
-                source: this.configuration.inputValueType,
-                property: this.configuration.inputValueProperty,
-                type: 'number',
-            },
-        ];
+    defineInputs(): InputDefinition {
+        const result = new InputDefinition();
+
+        result.set('value', {
+            source: this.configuration.inputValueType,
+            property: this.configuration.inputValueProperty,
+            type: 'number',
+            required: true,
+        });
+
+        return result;
     }
 
-    process(inputValues: Array<number>, message: Message): ProcessingResult {
+    execute(inputValues: Map<string, any>, message: Message): Result {
         let configuration = this.configuration;
         let timestamp = message.timestamp;
-        let inputValue = Number(inputValues.shift());
+        let inputValue = Number(inputValues.get('value'));
 
         let storage = this.storage;
         this.storage.addEvent(inputValue, timestamp);
@@ -52,7 +55,7 @@ export class ValueProcessor implements Processor {
             msg: message.data,
         };
 
-        let result: ProcessingResult = {
+        let result: Result = {
             outputs: [null, null],
             nodeStatus: null,
         };
