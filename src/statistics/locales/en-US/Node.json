@@ -20,6 +20,7 @@
       "output1Frequency": "Output 1 frequency",
       "output2Frequency": "Output 2 frequency",
       "inputValue": "Input value",
+      "inputTimestamp": "Input timestamp",
       "output1Value": "Output 1 value",
       "output2Value": "Output 2 value"
     },

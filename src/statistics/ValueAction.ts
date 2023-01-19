@@ -28,6 +28,13 @@ export class ValueAction implements Action {
             required: true,
         });
 
+        result.set('timestamp', {
+            source: this.configuration.inputTimestampSource,
+            property: this.configuration.inputTimestampProperty,
+            type: 'number',
+            required: true,
+        });
+
         return result;
     }
 
@@ -53,7 +60,7 @@ export class ValueAction implements Action {
 
     execute(input: Input): Output {
         let configuration = this.configuration;
-        let timestamp = input.getMessage().timestamp;
+        let timestamp = input.getRequiredValue<number>('timestamp');
         let inputValue = input.getRequiredValue<number>('value');
 
         let storage = this.storage;

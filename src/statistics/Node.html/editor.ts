@@ -53,6 +53,14 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
             value: 'msg',
             required: true,
         },
+        inputTimestampProperty: {
+            value: '',
+            required: false,
+        },
+        inputTimestampSource: {
+            value: 'date',
+            required: true,
+        },
         output1ValueProperty: {
             value: 'payload',
             required: true,
@@ -98,6 +106,12 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
             typeField: '#node-input-inputValueSource',
             types: ['msg', 'flow', 'global'],
             default: 'msg',
+        });
+
+        $('#node-input-inputTimestampProperty').typedInput({
+            typeField: '#node-input-inputTimestampSource',
+            types: ['date', 'msg', 'flow', 'global'],
+            default: 'date',
         });
 
         $('#node-input-output1ValueProperty').typedInput({

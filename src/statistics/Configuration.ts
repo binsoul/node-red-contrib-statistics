@@ -13,6 +13,8 @@ export class Configuration {
 
     inputValueProperty: string;
     inputValueSource: string;
+    inputTimestampProperty: string;
+    inputTimestampSource: string;
     output1ValueProperty: string;
     output1ValueTarget: string;
     output2ValueProperty: string;
@@ -29,6 +31,8 @@ export class Configuration {
         outputMethodCode: string = 'mean',
         inputValueProperty: string = 'payload',
         inputValueSource: string = 'msg',
+        inputTimestampProperty: string = '',
+        inputTimestampSource: string = 'date',
         output1ValueProperty: string = 'payload',
         output1ValueTarget: string = 'msg',
         output2ValueProperty: string = 'payload',
@@ -44,6 +48,8 @@ export class Configuration {
         this.outputMethodCode = outputMethodCode;
         this.inputValueProperty = inputValueProperty;
         this.inputValueSource = inputValueSource;
+        this.inputTimestampProperty = inputTimestampProperty;
+        this.inputTimestampSource = inputTimestampSource;
         this.output1ValueProperty = output1ValueProperty;
         this.output1ValueTarget = output1ValueTarget;
         this.output2ValueProperty = output2ValueProperty;

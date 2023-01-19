@@ -131,38 +131,42 @@ export class MessageHandler {
         });
     };
 
-    private readInputValues(definition: InputDefinition, message: InternalMessage): Promise<Input> {
+    private readInputValues(inputDefinition: InputDefinition, message: InternalMessage): Promise<Input> {
         const self = this;
         let promises = [];
 
-        for (let [name, value] of definition.entries()) {
-            let generator = function(name: string, input: InputValueDefinition): Promise<any> {
-                return new Promise<any>((resolve, reject) => {
-                    self.RED.util.evaluateNodeProperty(input.property, input.source, self.node, message.data, (error: Error | null, value: any) => {
-                        if (error) {
-                            value = input.default;
+        for (let [name, definition] of inputDefinition.entries()) {
+            if (definition.source === 'date') {
+                promises.push(Promise.resolve([name, message.timestamp]));
+            } else {
+                let generator = function(name: string, definition: InputValueDefinition): Promise<any> {
+                    return new Promise<any>((resolve, reject) => {
+                        self.RED.util.evaluateNodeProperty(definition.property, definition.source, self.node, message.data, (error: Error | null, value: any) => {
+                            if (error) {
+                                value = definition.default;
 
-                            if (input.required && typeof value === 'undefined') {
-                                reject(error);
-                                return;
-                            }
-                        }
-
-                        if (input.type === 'number') {
-                            if (! isNumeric(value)) {
-                                reject(new Error(self.RED._('invalid input')));
-                                return;
+                                if (definition.required && typeof value === 'undefined') {
+                                    reject(error);
+                                    return;
+                                }
                             }
 
-                            value = Number(value);
-                        }
+                            if (definition.type === 'number') {
+                                if (! isNumeric(value)) {
+                                    reject(new Error(self.RED._('invalid input')));
+                                    return;
+                                }
 
-                        resolve([name, value]);
+                                value = Number(value);
+                            }
+
+                            resolve([name, value]);
+                        });
                     });
-                });
-            };
+                };
 
-            promises.push(generator(name, value));
+                promises.push(generator(name, definition));
+            }
         }
 
         let allPromises = Promise.all(promises);

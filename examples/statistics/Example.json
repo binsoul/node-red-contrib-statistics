@@ -8,31 +8,6 @@
         "env": []
     },
     {
-        "id": "fec6c8f0051d6e85",
-        "type": "binsoul-statistics",
-        "z": "acc3454072c27074",
-        "outputMethod": "mean",
-        "slotCount": "60",
-        "slotResolutionNumber": "1",
-        "slotResolutionUnit": "seconds",
-        "slotMethod": "mean",
-        "interpolation": "stepAfter",
-        "output1Frequency": "changes",
-        "output2Frequency": "always",
-        "name": "",
-        "outputs": 2,
-        "x": 650,
-        "y": 180,
-        "wires": [
-            [
-                "0f5eb33110dc9be8"
-            ],
-            [
-                "1206287f8e4807d5"
-            ]
-        ]
-    },
-    {
         "id": "0f5eb33110dc9be8",
         "type": "debug",
         "z": "acc3454072c27074",
@@ -61,12 +36,17 @@
             {
                 "p": "topic",
                 "vt": "str"
+            },
+            {
+                "p": "additionalData",
+                "v": "foobar",
+                "vt": "str"
             }
         ],
         "repeat": "3",
         "crontab": "",
         "once": true,
-        "onceDelay": "1",
+        "onceDelay": "10",
         "topic": "0 or 1",
         "payload": "$floor($random()*2)",
         "payloadType": "jsonata",
@@ -74,7 +54,7 @@
         "y": 180,
         "wires": [
             [
-                "fec6c8f0051d6e85"
+                "9171c28e0731ccf4"
             ]
         ]
     },
@@ -87,12 +67,12 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 890,
-        "y": 240,
+        "y": 220,
         "wires": []
     },
     {
@@ -117,10 +97,43 @@
         "payload": "1+$floor($random()*100)",
         "payloadType": "jsonata",
         "x": 330,
-        "y": 240,
+        "y": 220,
         "wires": [
             [
-                "fec6c8f0051d6e85"
+                "9171c28e0731ccf4"
+            ]
+        ]
+    },
+    {
+        "id": "9171c28e0731ccf4",
+        "type": "binsoul-statistics",
+        "z": "acc3454072c27074",
+        "outputMethod": "mean",
+        "slotCount": "60",
+        "slotResolutionNumber": 1,
+        "slotResolutionUnit": "seconds",
+        "slotMethod": "mean",
+        "interpolation": "stepAfter",
+        "output1Frequency": "changes",
+        "output2Frequency": "always",
+        "inputValueProperty": "payload",
+        "inputValueSource": "msg",
+        "inputTimestampProperty": "",
+        "inputTimestampSource": "date",
+        "output1ValueProperty": "payload",
+        "output1ValueTarget": "msg",
+        "output2ValueProperty": "payload",
+        "output2ValueTarget": "msg",
+        "name": "",
+        "outputs": 2,
+        "x": 650,
+        "y": 200,
+        "wires": [
+            [
+                "0f5eb33110dc9be8"
+            ],
+            [
+                "1206287f8e4807d5"
             ]
         ]
     }

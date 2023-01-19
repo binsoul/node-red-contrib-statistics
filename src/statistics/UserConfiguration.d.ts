@@ -11,6 +11,8 @@ export interface UserConfigurationOptions {
     output2Frequency?: string
     inputValueProperty?: string
     inputValueSource?: string
+    inputTimestampProperty?: string
+    inputTimestampSource?: string
     output1ValueProperty?: string
     output1ValueTarget?: string
     output2ValueProperty?: string

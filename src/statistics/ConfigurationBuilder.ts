@@ -6,7 +6,7 @@ import {buildMethod} from './MethodFactory';
 const getString = function(value: any, defaultValue: string): string {
     let result = value || defaultValue;
 
-    result = result + '';
+    result = '' + result;
     if (result.trim() === '') {
         return defaultValue;
     }
@@ -29,6 +29,8 @@ export function buildConfiguration(config: UserConfiguration): Configuration {
     let output2Frequency = getString(config.output2Frequency, 'never');
     let inputValueProperty = getString(config.inputValueProperty, 'payload');
     let inputValueSource = getString(config.inputValueSource, 'msg');
+    let inputTimestampProperty = getString(config.inputTimestampProperty, '');
+    let inputTimestampSource = getString(config.inputTimestampSource, 'date');
     let output1ValueProperty = getString(config.output1ValueProperty, 'payload');
     let output1ValueTarget = getString(config.output1ValueTarget, 'msg');
     let output2ValueProperty = getString(config.output2ValueProperty, 'payload');
@@ -45,6 +47,8 @@ export function buildConfiguration(config: UserConfiguration): Configuration {
         outputMethodCode,
         inputValueProperty,
         inputValueSource,
+        inputTimestampProperty,
+        inputTimestampSource,
         output1ValueProperty,
         output1ValueTarget,
         output2ValueProperty,
