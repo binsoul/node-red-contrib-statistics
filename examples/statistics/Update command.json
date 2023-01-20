@@ -1,0 +1,352 @@
+[
+    {
+        "id": "f529f29af33f46db",
+        "type": "tab",
+        "label": "Update command",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "eff969f77b2d1795",
+        "type": "binsoul-statistics",
+        "z": "f529f29af33f46db",
+        "outputMethod": "mean",
+        "slotCount": "60",
+        "slotResolutionNumber": 1,
+        "slotResolutionUnit": "seconds",
+        "slotMethod": "mean",
+        "interpolation": "stepAfter",
+        "output1Frequency": "changes",
+        "output2Frequency": "always",
+        "inputValueProperty": "payload",
+        "inputValueSource": "msg",
+        "inputTimestampProperty": "timestamp",
+        "inputTimestampSource": "msg",
+        "output1ValueProperty": "payload",
+        "output1ValueTarget": "msg",
+        "output2ValueProperty": "payload",
+        "output2ValueTarget": "msg",
+        "name": "",
+        "outputs": 2,
+        "x": 630,
+        "y": 140,
+        "wires": [
+            [
+                "7a69382b72c5d828"
+            ],
+            [
+                "e34bad8b4949dfd4"
+            ]
+        ]
+    },
+    {
+        "id": "920c554fb0b7ec99",
+        "type": "inject",
+        "z": "f529f29af33f46db",
+        "name": "inject value between 1 and 100",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "timestamp",
+                "v": "",
+                "vt": "date"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "between 1 and 100",
+        "payload": "1+$floor($random()*100)",
+        "payloadType": "jsonata",
+        "x": 270,
+        "y": 120,
+        "wires": [
+            [
+                "eff969f77b2d1795"
+            ]
+        ]
+    },
+    {
+        "id": "71f5ccf17205ed56",
+        "type": "inject",
+        "z": "f529f29af33f46db",
+        "name": "send update command every 5 seconds",
+        "props": [
+            {
+                "p": "command",
+                "v": "update",
+                "vt": "str"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "between 1 and 100",
+        "x": 300,
+        "y": 160,
+        "wires": [
+            [
+                "eff969f77b2d1795"
+            ]
+        ]
+    },
+    {
+        "id": "7a69382b72c5d828",
+        "type": "debug",
+        "z": "f529f29af33f46db",
+        "name": "calculated value",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "e34bad8b4949dfd4",
+        "type": "debug",
+        "z": "f529f29af33f46db",
+        "name": "object",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "91723354a2f8957b",
+        "type": "inject",
+        "z": "f529f29af33f46db",
+        "name": "inject value between 1 and 100 for topic A",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "topic A",
+        "payload": "1+$floor($random()*100)",
+        "payloadType": "jsonata",
+        "x": 300,
+        "y": 380,
+        "wires": [
+            [
+                "ea68689af7795322"
+            ]
+        ]
+    },
+    {
+        "id": "49433d741b4340d4",
+        "type": "inject",
+        "z": "f529f29af33f46db",
+        "name": "send update command for topic A",
+        "props": [
+            {
+                "p": "command",
+                "v": "update",
+                "vt": "str"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "topic A",
+        "x": 270,
+        "y": 460,
+        "wires": [
+            [
+                "ea68689af7795322"
+            ]
+        ]
+    },
+    {
+        "id": "1ae116300deb5058",
+        "type": "debug",
+        "z": "f529f29af33f46db",
+        "name": "calculated value",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "87288c4ff04ccdb3",
+        "type": "debug",
+        "z": "f529f29af33f46db",
+        "name": "object",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "428e43da576ddebf",
+        "type": "inject",
+        "z": "f529f29af33f46db",
+        "name": "inject value between 1 and 10 for topic B",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "topic B",
+        "payload": "1+$floor($random()*10)",
+        "payloadType": "jsonata",
+        "x": 300,
+        "y": 420,
+        "wires": [
+            [
+                "ea68689af7795322"
+            ]
+        ]
+    },
+    {
+        "id": "7a1607890484dabe",
+        "type": "inject",
+        "z": "f529f29af33f46db",
+        "name": "send update command for topic B",
+        "props": [
+            {
+                "p": "command",
+                "v": "update",
+                "vt": "str"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "topic B",
+        "x": 270,
+        "y": 500,
+        "wires": [
+            [
+                "ea68689af7795322"
+            ]
+        ]
+    },
+    {
+        "id": "3bab64f0e7ab6a1a",
+        "type": "inject",
+        "z": "f529f29af33f46db",
+        "name": "send updateAll command",
+        "props": [
+            {
+                "p": "command",
+                "v": "updateAll",
+                "vt": "str"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "update all topics",
+        "x": 250,
+        "y": 540,
+        "wires": [
+            [
+                "ea68689af7795322"
+            ]
+        ]
+    },
+    {
+        "id": "ea68689af7795322",
+        "type": "binsoul-statistics",
+        "z": "f529f29af33f46db",
+        "outputMethod": "mean",
+        "slotCount": "60",
+        "slotResolutionNumber": 1,
+        "slotResolutionUnit": "seconds",
+        "slotMethod": "mean",
+        "interpolation": "stepAfter",
+        "output1Frequency": "changes",
+        "output2Frequency": "always",
+        "inputValueProperty": "payload",
+        "inputValueSource": "msg",
+        "inputTimestampProperty": "",
+        "inputTimestampSource": "date",
+        "output1ValueProperty": "payload",
+        "output1ValueTarget": "msg",
+        "output2ValueProperty": "payload",
+        "output2ValueTarget": "msg",
+        "name": "",
+        "outputs": 2,
+        "x": 630,
+        "y": 400,
+        "wires": [
+            [
+                "1ae116300deb5058"
+            ],
+            [
+                "87288c4ff04ccdb3"
+            ]
+        ]
+    }
+]
