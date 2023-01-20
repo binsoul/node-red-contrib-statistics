@@ -1,6 +1,11 @@
-import type {Event} from './Event';
 import type {Method} from './Method';
 import type {Coordinate} from './Coordinate';
+
+export interface Event {
+    value: number,
+    timestamp: number,
+    slot: number
+}
 
 export class Storage {
     private events: Array<Event> = [];

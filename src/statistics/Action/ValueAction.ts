@@ -1,12 +1,18 @@
 import type {Action} from '../Processing/Action';
 import type {Configuration} from '../Configuration';
-import type {HistoryItem} from '../HistoryItem';
 import type {Input} from '../Processing/Input';
 import {Storage} from '../Storage';
 import {InputDefinition} from '../Processing/InputDefinition';
 import {OutputDefinition} from '../Processing/OutputDefinition';
 import {Output} from '../Processing/Output';
 import type {NodeMessage} from 'node-red';
+
+interface HistoryItem {
+    timestamp: number,
+    inputValue: number
+    outputValue: number | null
+    msg: NodeMessage | null,
+}
 
 export class ValueAction implements Action {
     private readonly configuration: Configuration;
