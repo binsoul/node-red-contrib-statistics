@@ -1,6 +1,6 @@
 import type {Interpolator} from './Interpolator';
-import {noneInterpolator} from './NoneInterpolator';
-import {stepAfterInterpolator} from './StepAfterInterpolator';
+import {noneInterpolator} from './Interpolator/NoneInterpolator';
+import {stepAfterInterpolator} from './Interpolator/StepAfterInterpolator';
 
 export function buildInterpolator(interpolatorCode: string): Interpolator {
     switch (interpolatorCode) {

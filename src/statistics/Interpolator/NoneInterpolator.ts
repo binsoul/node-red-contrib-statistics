@@ -1,4 +1,4 @@
-import type {Coordinate} from './Coordinate';
+import type {Coordinate} from '../Coordinate';
 
 export function noneInterpolator(coordinates: Array<Coordinate>): Array<number> {
     if (coordinates.length === 0) {
