@@ -73,7 +73,7 @@ export class MessageHandler {
         }
 
         if (nextMessage) {
-            this.activeMessagePromise = self.processMessage(nextMessage)
+            self.activeMessagePromise = self.processMessage(nextMessage)
                 .then(() => {
                     self.activeMessagePromise = null;
                     self.processMessageQueue();
@@ -103,32 +103,46 @@ export class MessageHandler {
         }
     };
 
-    private processMessage(message: InternalMessage) {
+    private processMessage(message: InternalMessage): Promise<void[]> {
         const self = this;
 
-        return new Promise<void>((resolve, reject) => {
-            let possibleAction = self.actionFactory.build(message);
-            if (possibleAction === null) {
-                resolve();
+        let possibleActions = self.actionFactory.build(message);
+        if (possibleActions === null) {
+            return Promise.resolve([]);
+        }
 
-                return;
-            }
+        if (! Array.isArray(possibleActions)) {
+            possibleActions = [possibleActions];
+        }
 
-            let action: Action = possibleAction;
+        if (possibleActions.length === 0) {
+            return Promise.resolve([]);
+        }
 
-            let inputDefinition = action.defineInput();
-            let outputDefinition = action.defineOutput();
+        let promises = [];
 
-            self.readInputValues(inputDefinition, message)
-                .then((input: Input) => action.execute(input))
-                .then((output: Output) => self.writeOutputValues(outputDefinition, output))
-                .then((output: Output) => self.sendMessages(outputDefinition, output, message))
-                .then(function(output: Output) {
-                    resolve();
-                    self.updateStatus(output);
-                })
-                .catch((error: Error) => reject(error));
-        });
+        for (let possibleAction of possibleActions) {
+            let generator = function(action: Action): Promise<void> {
+                return new Promise<void>((resolve, reject) => {
+                    let inputDefinition = action.defineInput();
+                    let outputDefinition = action.defineOutput();
+
+                    self.readInputValues(inputDefinition, message)
+                        .then((input: Input) => action.execute(input))
+                        .then((output: Output) => self.writeOutputValues(outputDefinition, output))
+                        .then((output: Output) => self.sendMessages(outputDefinition, output, message))
+                        .then(function(output: Output) {
+                            resolve();
+                            self.updateStatus(output);
+                        })
+                        .catch((error: Error) => reject(error));
+                });
+            };
+
+            promises.push(generator(possibleAction));
+        }
+
+        return Promise.all(promises);
     };
 
     private readInputValues(inputDefinition: InputDefinition, message: InternalMessage): Promise<Input> {
@@ -269,16 +283,18 @@ export class MessageHandler {
         let self = this;
         let messages: Array<NodeMessage | null> | null = null;
 
-        if (outputDefinition.size !== null) {
+        if (outputDefinition.size > 0) {
             messages = [];
             for (let [name, definition] of outputDefinition.entries()) {
                 let value = output.getValue(name);
 
                 if (typeof value === 'undefined') {
-                    messages[definition.channel] = null;
+                    messages[definition.channel] = messages[definition.channel] || null;
                 } else {
+                    let nodeMessage = messages[definition.channel] || definition.message || message.data;
+
                     if (definition.target === 'msg') {
-                        let clonedMessage = self.RED.util.cloneMessage(message.data);
+                        let clonedMessage = self.RED.util.cloneMessage(nodeMessage);
                         if (typeof clonedMessage._msgid !== 'undefined') {
                             clonedMessage._msgid = self.RED.util.generateId();
                         }
@@ -289,7 +305,7 @@ export class MessageHandler {
 
                         messages[definition.channel] = clonedMessage;
                     } else {
-                        messages[definition.channel] = message.data;
+                        messages[definition.channel] = nodeMessage;
                     }
                 }
             }

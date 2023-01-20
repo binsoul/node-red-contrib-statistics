@@ -6,6 +6,7 @@ import {Storage} from '../Storage';
 import {InputDefinition} from '../Processing/InputDefinition';
 import {OutputDefinition} from '../Processing/OutputDefinition';
 import {Output} from '../Processing/Output';
+import type {NodeMessage} from 'node-red';
 
 export class ValueAction implements Action {
     private readonly configuration: Configuration;
@@ -119,6 +120,10 @@ export class ValueAction implements Action {
 
         return result;
     };
+
+    getLastMessage(): NodeMessage | null {
+        return this.history.msg;
+    }
 
     private getStatistics(interpolatedCoordinates: Array<number>): Record<'value' | 'minimum' | 'maximum' | 'count', number | null> {
         let minimum = null;

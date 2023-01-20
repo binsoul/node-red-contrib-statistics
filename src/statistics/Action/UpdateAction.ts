@@ -29,7 +29,14 @@ export class UpdateAction implements Action {
     }
 
     defineOutput(): OutputDefinition {
-        return this.valueAction.defineOutput();
+        const definition = this.valueAction.defineOutput();
+
+        const lastMessage = this.valueAction.getLastMessage();
+        for (let output of definition.values()) {
+            output.message = lastMessage;
+        }
+
+        return definition;
     }
 
     execute(input: Input): Output {
