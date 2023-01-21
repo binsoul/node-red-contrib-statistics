@@ -17,6 +17,7 @@
       "slotResolutionUnit": "Slot resolution unit",
       "slotCount": "Number of slots",
       "interpolation": "Interpolation",
+      "precision": "Fraction digits ",
       "output1Frequency": "Output 1 frequency",
       "output2Frequency": "Output 2 frequency",
       "inputValue": "Input value",
@@ -52,6 +53,18 @@
       "interpolation": {
         "none": "No interpolation",
         "stepAfter": "Step after"
+      },
+      "precision": {
+        "infinite": "no rounding",
+        "0": "none",
+        "1": "max 1",
+        "2": "max 2",
+        "3": "max 3",
+        "4": "max 4",
+        "5": "max 5",
+        "6": "max 6",
+        "7": "max 7",
+        "8": "max 8"
       },
       "outputMode": {
         "always": "Always",

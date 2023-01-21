@@ -7,6 +7,7 @@ export interface UserConfigurationOptions {
     slotResolutionUnit?: string,
     slotMethod?: string,
     interpolation?: string,
+    precision?: string,
     output1Frequency?: string,
     output2Frequency?: string
     inputValueProperty?: string

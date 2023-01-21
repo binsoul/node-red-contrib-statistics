@@ -101,6 +101,9 @@ export class ValueAction implements Action {
 
         let interpolatedCoordinates = configuration.interpolator(coordinates, configuration.slotCount);
         let outputValue = configuration.outputMethod(interpolatedCoordinates);
+        if (configuration.precision !== 'infinite') {
+            outputValue = this.round(outputValue, configuration.precision);
+        }
 
         let isChanged = history.outputValue !== outputValue;
         history.outputValue = outputValue;
@@ -123,7 +126,7 @@ export class ValueAction implements Action {
         result.setNodeStatus({
             fill: 'green',
             shape: (isChanged ? 'dot' : 'ring'),
-            text: `[${this.id}] ${this.formatNumber(storage.getEventCount())}+${this.formatNumber(storage.getHistoryCount())} ⇒ ${this.formatNumber(outputValue)}`,
+            text: `[${this.id}] ${this.format(storage.getEventCount())}+${this.format(storage.getHistoryCount())} ⇒ ${this.format(outputValue)}`,
         });
 
         return result;
@@ -179,9 +182,13 @@ export class ValueAction implements Action {
         };
     }
 
-    private formatNumber(value: number) {
+    private round(value: number, decimals: string): number {
+        return Number(Math.round(<number><unknown>(value + 'e' + decimals)) + 'e-' + decimals);
+    }
+
+    private format(value: number): string {
         return value.toLocaleString(undefined, {
-            maximumFractionDigits: 8,
+            maximumFractionDigits: this.configuration.precision !== 'infinite' ? Number(this.configuration.precision) : 10,
             minimumFractionDigits: 0,
         });
     }

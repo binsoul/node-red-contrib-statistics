@@ -37,6 +37,10 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
             value: 'stepAfter',
             required: true,
         },
+        precision: {
+            value: 'infinite',
+            required: true,
+        },
         output1Frequency: {
             value: 'changes',
             required: true,
