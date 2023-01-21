@@ -57,6 +57,8 @@ export class ActionFactory implements ActionFactoryInterface {
         if (action === null || typeof action === 'undefined') {
             action = new ValueAction(this.configuration);
             this.actionsByTopic.set(topic, action);
+
+            this.updateActionIds();
         }
 
         return action;
@@ -73,5 +75,14 @@ export class ActionFactory implements ActionFactoryInterface {
     }
 
     teardown(): void {
+    }
+
+    private updateActionIds(): void {
+        let size = '' + this.actionsByTopic.size;
+        let index = 0;
+        for (let action of this.actionsByTopic.values()) {
+            index++;
+            action.setId(('' + index).padStart(size.length, '0'));
+        }
     }
 }

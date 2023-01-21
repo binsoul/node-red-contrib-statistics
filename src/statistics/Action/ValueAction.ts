@@ -25,6 +25,8 @@ export class ValueAction implements Action {
         msg: null,
     };
 
+    private id: string = '';
+
     constructor(configuration: Configuration) {
         this.configuration = configuration;
         this.storage = new Storage(configuration.slotCount, configuration.slotResolution, configuration.slotMethod);
@@ -121,11 +123,19 @@ export class ValueAction implements Action {
         result.setNodeStatus({
             fill: 'green',
             shape: (isChanged ? 'dot' : 'ring'),
-            text: `[${storage.getEventCount()}+${storage.getHistoryCount()}] ${outputValue}`,
+            text: `[${this.id}] ${this.formatNumber(storage.getEventCount())}+${this.formatNumber(storage.getHistoryCount())} ⇒ ${this.formatNumber(outputValue)}`,
         });
 
         return result;
     };
+
+    getId(): string {
+        return this.id;
+    }
+
+    setId(value: string) {
+        this.id = value;
+    }
 
     getLastMessage(): NodeMessage | null {
         return this.history.msg;
@@ -158,5 +168,12 @@ export class ValueAction implements Action {
             maximum: maximum,
             count: this.storage.getEventCount(),
         };
+    }
+
+    private formatNumber(value: number) {
+        return value.toLocaleString(undefined, {
+            maximumFractionDigits: 8,
+            minimumFractionDigits: 0,
+        });
     }
 }
