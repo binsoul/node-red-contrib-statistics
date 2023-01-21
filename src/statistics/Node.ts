@@ -10,7 +10,7 @@ const nodeInitializer: NodeInitializer = (RED): void => {
         RED.nodes.createNode(node, userConfiguration);
 
         const configuration = buildConfiguration(userConfiguration);
-        const actionFactory = new ActionFactory(configuration);
+        const actionFactory = new ActionFactory(RED, node, configuration);
         const messageHandler = new MessageHandler(RED, node, actionFactory);
 
         const setupResult = actionFactory.setup();

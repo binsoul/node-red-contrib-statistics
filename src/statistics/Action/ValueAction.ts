@@ -141,6 +141,15 @@ export class ValueAction implements Action {
         return this.history.msg;
     }
 
+    clear(): void {
+        this.storage.clear();
+
+        this.history.timestamp = 0;
+        this.history.inputValue = 0;
+        this.history.outputValue = null;
+        this.history.msg = null;
+    }
+
     private getStatistics(interpolatedCoordinates: Array<number>): Record<'value' | 'minimum' | 'maximum' | 'count', number | null> {
         let minimum = null;
         let maximum = null;

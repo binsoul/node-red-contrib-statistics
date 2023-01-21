@@ -6,6 +6,8 @@ import type {SetupResult} from './SetupResult';
 import type {ActionFactory as ActionFactoryInterface} from './Processing/ActionFactory';
 import {UpdateAction} from './Action/UpdateAction';
 import type {NodeMessageInFlow} from 'node-red';
+import {ClearAction} from './Action/ClearAction';
+import type {Node, NodeAPI} from '@node-red/registry';
 
 interface MessageData extends NodeMessageInFlow {
     command?: string | undefined,
@@ -13,9 +15,14 @@ interface MessageData extends NodeMessageInFlow {
 
 export class ActionFactory implements ActionFactoryInterface {
     private readonly configuration: Configuration;
+    private readonly RED: NodeAPI;
+    private readonly node: Node;
+
     private actionsByTopic = new Map<string, ValueAction>();
 
-    constructor(configuration: Configuration) {
+    constructor(RED: NodeAPI, node: Node, configuration: Configuration) {
+        this.RED = RED;
+        this.node = node;
         this.configuration = configuration;
     }
 
@@ -29,18 +36,31 @@ export class ActionFactory implements ActionFactoryInterface {
         topic = topic.toLowerCase();
         let command = data.command;
         if (typeof command !== 'undefined' && ('' + command).trim() !== '') {
+            const valueAction = this.actionsByTopic.get(topic);
+            let actions = [];
+
             switch (command.toLowerCase()) {
                 case 'update':
-                    const valueAction = this.actionsByTopic.get(topic);
                     if (typeof valueAction === 'undefined') {
                         return null;
                     }
 
                     return new UpdateAction(this.configuration, valueAction);
                 case 'updateall':
-                    let actions = [];
                     for (let valueAction of this.actionsByTopic.values()) {
                         actions.push(new UpdateAction(this.configuration, valueAction));
+                    }
+
+                    return actions;
+                case 'clear':
+                    if (typeof valueAction === 'undefined') {
+                        return null;
+                    }
+
+                    return new ClearAction(valueAction, this.RED._);
+                case 'clearall':
+                    for (let valueAction of this.actionsByTopic.values()) {
+                        actions.push(new ClearAction(valueAction, this.RED._));
                     }
 
                     return actions;

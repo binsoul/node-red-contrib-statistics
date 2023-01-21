@@ -50,10 +50,6 @@ export class Storage {
         }
     }
 
-    private getSlot(timestamp: number) {
-        return Math.floor(timestamp / this.resolutionInMs) * this.resolutionInMs;
-    }
-
     getCoordinates(timestamp: number): Array<Coordinate> {
         this.prepareEvents(timestamp);
 
@@ -72,6 +68,15 @@ export class Storage {
 
     getHistoryCount(): number {
         return this.history.length;
+    }
+
+    clear(): void {
+        this.events = [];
+        this.history = [];
+    }
+
+    private getSlot(timestamp: number) {
+        return Math.floor(timestamp / this.resolutionInMs) * this.resolutionInMs;
     }
 
     private prepareEvents(timestamp: number): void {

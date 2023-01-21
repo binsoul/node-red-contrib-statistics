@@ -2,7 +2,7 @@
   "binsoul-statistics": {
     "status": {
       "noEvents": "no events",
-      "invalidInputValue": "invalid input value"
+      "cleared": "cleared"
     },
     "group": {
       "input": "Input",
