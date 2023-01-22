@@ -2,7 +2,6 @@ import type {Configuration} from './Configuration';
 import {ValueAction} from './Action/ValueAction';
 import type {Message} from './Processing/Message';
 import type {Action} from './Processing/Action';
-import type {SetupResult} from './SetupResult';
 import type {ActionFactory as ActionFactoryInterface} from './Processing/ActionFactory';
 import {UpdateAction} from './Action/UpdateAction';
 import type {NodeMessageInFlow} from 'node-red';
@@ -65,6 +64,11 @@ export class ActionFactory implements ActionFactoryInterface {
 
                     return actions;
                 default:
+                    this.node.status({
+                        fill: 'red',
+                        shape: 'dot',
+                        text: 'binsoul-statistics.status.invalidCommand',
+                    });
                     return null;
             }
         }
@@ -84,14 +88,12 @@ export class ActionFactory implements ActionFactoryInterface {
         return action;
     }
 
-    setup(): SetupResult | null {
-        return {
-            nodeStatus: {
-                fill: 'yellow',
-                shape: 'dot',
-                text: 'binsoul-statistics.status.noEvents',
-            },
-        };
+    setup(): void {
+        this.node.status({
+            fill: 'yellow',
+            shape: 'dot',
+            text: 'binsoul-statistics.status.noEvents',
+        });
     }
 
     teardown(): void {
