@@ -20,6 +20,8 @@ export class Configuration {
     output1ValueTarget: string;
     output2ValueProperty: string;
     output2ValueTarget: string;
+    updateMode: string;
+    updateFrequency: number;
 
     constructor(
         outputMethod: Method,
@@ -39,6 +41,8 @@ export class Configuration {
         output1ValueTarget: string = 'msg',
         output2ValueProperty: string = 'payload',
         output2ValueTarget: string = 'msg',
+        updateMode: string = 'events',
+        updateFrequency: number = 5,
     ) {
         this.outputMethod = outputMethod;
         this.slotCount = slotCount;
@@ -57,5 +61,7 @@ export class Configuration {
         this.output1ValueTarget = output1ValueTarget;
         this.output2ValueProperty = output2ValueProperty;
         this.output2ValueTarget = output2ValueTarget;
+        this.updateMode = updateMode;
+        this.updateFrequency = updateFrequency;
     }
 }

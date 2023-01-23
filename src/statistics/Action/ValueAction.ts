@@ -8,8 +8,9 @@ import {Output} from '../Processing/Output';
 import type {NodeMessage} from 'node-red';
 
 interface HistoryItem {
-    timestamp: number,
-    inputValue: number
+    lastEventAt: number | null,
+    lastUpdateAt: number | null,
+    inputValue: number | null
     outputValue: number | null
     msg: NodeMessage | null,
 }
@@ -19,8 +20,9 @@ export class ValueAction implements Action {
 
     private readonly storage: Storage;
     private history: HistoryItem = {
-        timestamp: 0,
-        inputValue: 0,
+        lastEventAt: null,
+        lastUpdateAt: null,
+        inputValue: null,
         outputValue: null,
         msg: null,
     };
@@ -78,11 +80,11 @@ export class ValueAction implements Action {
 
         this.storage.addEvent(inputValue, timestamp);
 
-        this.history.timestamp = (new Date()).getTime();
+        this.history.lastEventAt = (new Date()).getTime();
         this.history.inputValue = inputValue;
         this.history.msg = input.getMessage().data;
 
-        return this.generateOutput(this.history.timestamp);
+        return this.generateOutput(this.history.lastEventAt);
     }
 
     generateOutput(timestamp: number): Output {
@@ -90,8 +92,10 @@ export class ValueAction implements Action {
         let storage = this.storage;
 
         let history = this.history;
-        if (timestamp < history.timestamp) {
-            timestamp = history.timestamp;
+        history.lastUpdateAt = (new Date()).getTime();
+
+        if (history.lastEventAt !== null && timestamp < history.lastEventAt) {
+            timestamp = history.lastEventAt;
         }
 
         let coordinates = storage.getCoordinates(timestamp);
@@ -144,11 +148,24 @@ export class ValueAction implements Action {
         return this.history.msg;
     }
 
+    getLastEventTimestamp(): number | null {
+        return this.history.lastEventAt;
+    }
+
+    getLastUpdateTimestamp(): number | null {
+        return this.history.lastUpdateAt;
+    }
+
+    getEventCount(): number {
+        return this.storage.getEventCount();
+    }
+
     clear(): void {
         this.storage.clear();
 
-        this.history.timestamp = 0;
-        this.history.inputValue = 0;
+        this.history.lastEventAt = null;
+        this.history.lastUpdateAt = null;
+        this.history.inputValue = null;
         this.history.outputValue = null;
         this.history.msg = null;
     }

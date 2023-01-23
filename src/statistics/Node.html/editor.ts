@@ -81,6 +81,15 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
             value: 'msg',
             required: true,
         },
+        updateMode: {
+            value: 'events',
+            required: true,
+        },
+        updateFrequency: {
+            value: 5,
+            required: true,
+            validate: RED.validators.number(),
+        },
         name: {value: ''},
         outputs: {value: 1},
     },

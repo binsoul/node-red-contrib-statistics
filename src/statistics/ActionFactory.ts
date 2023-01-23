@@ -1,3 +1,4 @@
+import {setTimeout, clearTimeout} from 'timers';
 import type {Configuration} from './Configuration';
 import {ValueAction} from './Action/ValueAction';
 import type {Message} from './Processing/Message';
@@ -9,7 +10,8 @@ import {ClearAction} from './Action/ClearAction';
 import type {Node, NodeAPI} from '@node-red/registry';
 
 interface MessageData extends NodeMessageInFlow {
-    command?: string | undefined,
+    command?: string,
+    timestamp?: number,
 }
 
 export class ActionFactory implements ActionFactoryInterface {
@@ -18,6 +20,7 @@ export class ActionFactory implements ActionFactoryInterface {
     private readonly node: Node;
 
     private actionsByTopic = new Map<string, ValueAction>();
+    private updateTimer: NodeJS.Timeout | null = null;
 
     constructor(RED: NodeAPI, node: Node, configuration: Configuration) {
         this.RED = RED;
@@ -44,11 +47,15 @@ export class ActionFactory implements ActionFactoryInterface {
                         return null;
                     }
 
+                    this.scheduleUpdate();
+
                     return new UpdateAction(this.configuration, valueAction);
                 case 'updateall':
                     for (let valueAction of this.actionsByTopic.values()) {
                         actions.push(new UpdateAction(this.configuration, valueAction));
                     }
+
+                    this.scheduleUpdate();
 
                     return actions;
                 case 'clear':
@@ -60,6 +67,10 @@ export class ActionFactory implements ActionFactoryInterface {
                 case 'clearall':
                     for (let valueAction of this.actionsByTopic.values()) {
                         actions.push(new ClearAction(valueAction, this.RED._));
+                    }
+
+                    if (this.updateTimer !== null) {
+                        clearTimeout(this.updateTimer);
                     }
 
                     return actions;
@@ -85,6 +96,8 @@ export class ActionFactory implements ActionFactoryInterface {
             this.updateActionIds();
         }
 
+        this.scheduleUpdate();
+
         return action;
     }
 
@@ -97,6 +110,9 @@ export class ActionFactory implements ActionFactoryInterface {
     }
 
     teardown(): void {
+        if (this.updateTimer !== null) {
+            clearTimeout(this.updateTimer);
+        }
     }
 
     private updateActionIds(): void {
@@ -106,5 +122,79 @@ export class ActionFactory implements ActionFactoryInterface {
             index++;
             action.setId(('' + index).padStart(size.length, '0'));
         }
+    }
+
+    private scheduleUpdate(): void {
+        const self = this;
+
+        if (self.updateTimer !== null || self.configuration.updateMode === 'never') {
+            return;
+        }
+
+        const now = (new Date()).getTime();
+        self.updateTimer = setTimeout(() => {
+            self.executeUpdate();
+        }, (self.getEndOfSlot(now) - now) + (self.configuration.updateFrequency * self.configuration.slotResolution));
+    }
+
+    executeUpdate(): void {
+        const now = (new Date()).getTime();
+        const startOfSlot = this.getStartOfSlot(now);
+        const updateTime = (this.configuration.updateFrequency + 1) * this.configuration.slotResolution;
+
+        let shortestTimeout = null;
+        let updateTopics = [];
+
+        for (let [topic, valueAction] of this.actionsByTopic) {
+            let lastUpdateTimestamp = valueAction.getLastUpdateTimestamp();
+            let lastEventTimestamp = valueAction.getLastEventTimestamp();
+
+            if (valueAction.getEventCount() === 0 || lastUpdateTimestamp === null || lastEventTimestamp === null) {
+                continue;
+            }
+
+            if (lastUpdateTimestamp < lastEventTimestamp) {
+                lastUpdateTimestamp = this.getEndOfSlot(lastEventTimestamp);
+            } else {
+                lastUpdateTimestamp = this.getStartOfSlot(lastUpdateTimestamp);
+            }
+
+            let nextUpdateAt = lastUpdateTimestamp + updateTime;
+
+            if (nextUpdateAt <= startOfSlot) {
+                updateTopics.push(topic);
+            } else {
+                if (shortestTimeout === null) {
+                    shortestTimeout = updateTime;
+                }
+
+                shortestTimeout = Math.min(shortestTimeout, nextUpdateAt - now);
+            }
+        }
+
+        if (shortestTimeout !== null) {
+            const self = this;
+            self.updateTimer = setTimeout(() => {
+                self.executeUpdate();
+            }, shortestTimeout);
+        } else {
+            this.updateTimer = null;
+        }
+
+        for (let topic of updateTopics) {
+            this.node.receive(<MessageData>{
+                'topic': topic,
+                'command': 'update',
+                'timestamp': now,
+            });
+        }
+    }
+
+    private getStartOfSlot(timestamp: number) {
+        return Math.floor(timestamp / this.configuration.slotResolution) * this.configuration.slotResolution;
+    }
+
+    private getEndOfSlot(timestamp: number) {
+        return Math.ceil(timestamp / this.configuration.slotResolution) * this.configuration.slotResolution;
     }
 }

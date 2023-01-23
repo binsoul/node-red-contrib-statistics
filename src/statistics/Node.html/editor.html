@@ -98,6 +98,24 @@
                 <option value="0" data-i18n="binsoul-statistics.option.precision.0">0</option>
             </select>
         </div>
+
+        <div class="form-row" data-i18n="[title]binsoul-statistics.label.updateMode">
+            <label for="node-input-slotResolutionNumber">
+                <span data-i18n="binsoul-statistics.label.updateMode"></span>
+            </label>
+            <select id="node-input-updateMode" data-i18n="[title]binsoul-statistics.label.updateMode">
+                <option value="never" data-i18n="binsoul-statistics.option.updateMode.never"></option>
+                <option value="events" data-i18n="binsoul-statistics.option.updateMode.events"></option>
+            </select>
+        </div>
+
+        <div class="form-row" data-i18n="[title]binsoul-statistics.label.updateFrequency">
+            <label for="node-input-updateFrequency">
+                <span data-i18n="binsoul-statistics.label.updateFrequency"></span>
+            </label>
+            <input type="number" min="1" id="node-input-updateFrequency">
+            <span>Slots</span>
+        </div>
     </fieldset>
 
     <fieldset>

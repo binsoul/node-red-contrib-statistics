@@ -13,12 +13,7 @@ const nodeInitializer: NodeInitializer = (RED): void => {
         const actionFactory = new ActionFactory(RED, node, configuration);
         const messageHandler = new MessageHandler(RED, node, actionFactory);
 
-        const setupResult = actionFactory.setup();
-        if (setupResult !== null) {
-            if (setupResult.nodeStatus !== null) {
-                node.status(setupResult.nodeStatus);
-            }
-        }
+        actionFactory.setup();
 
         node.on('input', (msg, send, done) => messageHandler.handle(msg, send, done));
         node.on('close', () => actionFactory.teardown());

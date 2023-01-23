@@ -18,6 +18,8 @@ export interface UserConfigurationOptions {
     output1ValueTarget?: string
     output2ValueProperty?: string
     output2ValueTarget?: string
+    updateMode?: string
+    updateFrequency?: number
 }
 
 export interface UserConfiguration extends NodeDef, UserConfigurationOptions {

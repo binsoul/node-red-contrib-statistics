@@ -1,76 +1,83 @@
 {
-  "binsoul-statistics": {
-    "status": {
-      "noEvents": "no events",
-      "cleared": "cleared"
-    },
-    "group": {
-      "input": "Input",
-      "output1": "Output 1",
-      "output2": "Output 2",
-      "ui": "UI"
-    },
-    "label": {
-      "outputMethod": "Output method",
-      "slotMethod": "Slot method",
-      "slotResolutionNumber": "Slot resolution",
-      "slotResolutionUnit": "Slot resolution unit",
-      "slotCount": "Number of slots",
-      "interpolation": "Interpolation",
-      "precision": "Fraction digits ",
-      "output1Frequency": "Output 1 frequency",
-      "output2Frequency": "Output 2 frequency",
-      "inputValue": "Input value",
-      "inputTimestamp": "Input timestamp",
-      "output1Value": "Output 1 value",
-      "output2Value": "Output 2 value"
-    },
-    "option": {
-      "resolution": {
-        "seconds": "Seconds",
-        "minutes": "Minutes"
-      },
-      "method": {
-        "geometricMean": "Geometric mean",
-        "harmonicMean": "Harmonic mean",
-        "interquartileRange": "Interquartile range",
-        "max": "Maximum",
-        "mean": "Mean",
-        "median": "Median",
-        "medianAbsoluteDeviation": "Median absolute deviation",
-        "min": "Minimum",
-        "mode": "Mode",
-        "product": "Product",
-        "rootMeanSquare": "Root mean square",
-        "sampleKurtosis": "Sample kurtosis",
-        "sampleSkewness": "Sample skewness",
-        "sampleStandardDeviation": "Sample standard deviation",
-        "standardDeviation": "Standard deviation",
-        "sum": "Sum",
-        "uniqueCount": "Unique count",
-        "variance": "Variance"
-      },
-      "interpolation": {
-        "none": "No interpolation",
-        "stepAfter": "Step after"
-      },
-      "precision": {
-        "infinite": "no rounding",
-        "0": "none",
-        "1": "max 1",
-        "2": "max 2",
-        "3": "max 3",
-        "4": "max 4",
-        "5": "max 5",
-        "6": "max 6",
-        "7": "max 7",
-        "8": "max 8"
-      },
-      "outputMode": {
-        "always": "Always",
-        "changes": "If value has changed",
-        "never": "Never"
-      }
+    "binsoul-statistics": {
+        "status": {
+            "noEvents": "no events",
+            "invalidCommand": "invalid command",
+            "cleared": "cleared"
+        },
+        "group": {
+            "input": "Input",
+            "output1": "Output 1",
+            "output2": "Output 2",
+            "ui": "UI"
+        },
+        "label": {
+            "outputMethod": "Output method",
+            "slotMethod": "Slot method",
+            "slotResolutionNumber": "Slot resolution",
+            "slotResolutionUnit": "Slot resolution unit",
+            "slotCount": "Number of slots",
+            "interpolation": "Interpolation",
+            "precision": "Fraction digits ",
+            "output1Frequency": "Output 1 frequency",
+            "output2Frequency": "Output 2 frequency",
+            "inputValue": "Input value",
+            "inputTimestamp": "Input timestamp",
+            "output1Value": "Output 1 value",
+            "output2Value": "Output 2 value",
+            "updateMode": "Update automatically",
+            "updateFrequency": "Update interval"
+        },
+        "option": {
+            "resolution": {
+                "seconds": "Seconds",
+                "minutes": "Minutes"
+            },
+            "method": {
+                "geometricMean": "Geometric mean",
+                "harmonicMean": "Harmonic mean",
+                "interquartileRange": "Interquartile range",
+                "max": "Maximum",
+                "mean": "Mean",
+                "median": "Median",
+                "medianAbsoluteDeviation": "Median absolute deviation",
+                "min": "Minimum",
+                "mode": "Mode",
+                "product": "Product",
+                "rootMeanSquare": "Root mean square",
+                "sampleKurtosis": "Sample kurtosis",
+                "sampleSkewness": "Sample skewness",
+                "sampleStandardDeviation": "Sample standard deviation",
+                "standardDeviation": "Standard deviation",
+                "sum": "Sum",
+                "uniqueCount": "Unique count",
+                "variance": "Variance"
+            },
+            "interpolation": {
+                "none": "No interpolation",
+                "stepAfter": "Step after"
+            },
+            "precision": {
+                "infinite": "no rounding",
+                "0": "none",
+                "1": "max 1",
+                "2": "max 2",
+                "3": "max 3",
+                "4": "max 4",
+                "5": "max 5",
+                "6": "max 6",
+                "7": "max 7",
+                "8": "max 8"
+            },
+            "outputMode": {
+                "always": "Always",
+                "changes": "If value has changed",
+                "never": "Never"
+            },
+            "updateMode": {
+                "never": "Never",
+                "events": "If no events are received"
+            }
+        }
     }
-  }
 }
