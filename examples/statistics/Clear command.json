@@ -1,223 +1,225 @@
 [
-  {
-    "id": "19d8ee8eb5ec6ae6",
-    "type": "tab",
-    "label": "Clear command",
-    "disabled": false,
-    "info": "",
-    "env": []
-  },
-  {
-    "id": "27c3fc488f845334",
-    "type": "inject",
-    "z": "19d8ee8eb5ec6ae6",
-    "name": "inject value between 1 and 100 for topic A",
-    "props": [
-      {
-        "p": "payload"
-      },
-      {
-        "p": "topic",
-        "vt": "str"
-      }
-    ],
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "onceDelay": "1",
-    "topic": "topic A",
-    "payload": "1+$floor($random()*100)",
-    "payloadType": "jsonata",
-    "x": 280,
-    "y": 60,
-    "wires": [
-      [
-        "f273621711d17fd9"
-      ]
-    ]
-  },
-  {
-    "id": "bfbb7fff984015fd",
-    "type": "inject",
-    "z": "19d8ee8eb5ec6ae6",
-    "name": "send clear command for topic A",
-    "props": [
-      {
-        "p": "command",
-        "v": "clear",
-        "vt": "str"
-      },
-      {
-        "p": "topic",
-        "vt": "str"
-      }
-    ],
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "onceDelay": 0.1,
-    "topic": "topic A",
-    "x": 250,
-    "y": 140,
-    "wires": [
-      [
-        "f273621711d17fd9"
-      ]
-    ]
-  },
-  {
-    "id": "917c51a51e435bfe",
-    "type": "debug",
-    "z": "19d8ee8eb5ec6ae6",
-    "name": "calculated value",
-    "active": true,
-    "tosidebar": true,
-    "console": false,
-    "tostatus": false,
-    "complete": "payload",
-    "targetType": "msg",
-    "statusVal": "",
-    "statusType": "auto",
-    "x": 860,
-    "y": 60,
-    "wires": []
-  },
-  {
-    "id": "041bf8e023d24404",
-    "type": "debug",
-    "z": "19d8ee8eb5ec6ae6",
-    "name": "object",
-    "active": true,
-    "tosidebar": true,
-    "console": false,
-    "tostatus": false,
-    "complete": "payload",
-    "targetType": "msg",
-    "statusVal": "",
-    "statusType": "auto",
-    "x": 830,
-    "y": 100,
-    "wires": []
-  },
-  {
-    "id": "db268b30ce0e2962",
-    "type": "inject",
-    "z": "19d8ee8eb5ec6ae6",
-    "name": "inject value between 1 and 10 for topic B",
-    "props": [
-      {
-        "p": "payload"
-      },
-      {
-        "p": "topic",
-        "vt": "str"
-      }
-    ],
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "onceDelay": "1",
-    "topic": "topic B",
-    "payload": "1+$floor($random()*10)",
-    "payloadType": "jsonata",
-    "x": 280,
-    "y": 100,
-    "wires": [
-      [
-        "f273621711d17fd9"
-      ]
-    ]
-  },
-  {
-    "id": "3a71c4de05416f32",
-    "type": "inject",
-    "z": "19d8ee8eb5ec6ae6",
-    "name": "send clear command for topic B",
-    "props": [
-      {
-        "p": "command",
-        "v": "clear",
-        "vt": "str"
-      },
-      {
-        "p": "topic",
-        "vt": "str"
-      }
-    ],
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "onceDelay": 0.1,
-    "topic": "topic B",
-    "x": 250,
-    "y": 180,
-    "wires": [
-      [
-        "f273621711d17fd9"
-      ]
-    ]
-  },
-  {
-    "id": "8a571d3d1f525b0d",
-    "type": "inject",
-    "z": "19d8ee8eb5ec6ae6",
-    "name": "send clearAll command",
-    "props": [
-      {
-        "p": "command",
-        "v": "clearAll",
-        "vt": "str"
-      },
-      {
-        "p": "topic",
-        "vt": "str"
-      }
-    ],
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "onceDelay": 0.1,
-    "topic": "reset all topics",
-    "x": 220,
-    "y": 220,
-    "wires": [
-      [
-        "f273621711d17fd9"
-      ]
-    ]
-  },
-  {
-    "id": "f273621711d17fd9",
-    "type": "binsoul-statistics",
-    "z": "19d8ee8eb5ec6ae6",
-    "outputMethod": "mean",
-    "slotCount": "60",
-    "slotResolutionNumber": 1,
-    "slotResolutionUnit": "seconds",
-    "slotMethod": "mean",
-    "interpolation": "stepAfter",
-    "precision": "infinite",
-    "output1Frequency": "changes",
-    "output2Frequency": "always",
-    "inputValueProperty": "payload",
-    "inputValueSource": "msg",
-    "inputTimestampProperty": "",
-    "inputTimestampSource": "date",
-    "output1ValueProperty": "payload",
-    "output1ValueTarget": "msg",
-    "output2ValueProperty": "payload",
-    "output2ValueTarget": "msg",
-    "name": "",
-    "outputs": 2,
-    "x": 610,
-    "y": 80,
-    "wires": [
-      [
-        "917c51a51e435bfe"
-      ],
-      [
-        "041bf8e023d24404"
-      ]
-    ]
-  }
+    {
+        "id": "19d8ee8eb5ec6ae6",
+        "type": "tab",
+        "label": "Clear command",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "27c3fc488f845334",
+        "type": "inject",
+        "z": "19d8ee8eb5ec6ae6",
+        "name": "inject value between 1 and 100 for topic A",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "topic A",
+        "payload": "1+$floor($random()*100)",
+        "payloadType": "jsonata",
+        "x": 280,
+        "y": 60,
+        "wires": [
+            [
+                "f273621711d17fd9"
+            ]
+        ]
+    },
+    {
+        "id": "bfbb7fff984015fd",
+        "type": "inject",
+        "z": "19d8ee8eb5ec6ae6",
+        "name": "send clear command for topic A",
+        "props": [
+            {
+                "p": "command",
+                "v": "clear",
+                "vt": "str"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "topic A",
+        "x": 250,
+        "y": 140,
+        "wires": [
+            [
+                "f273621711d17fd9"
+            ]
+        ]
+    },
+    {
+        "id": "917c51a51e435bfe",
+        "type": "debug",
+        "z": "19d8ee8eb5ec6ae6",
+        "name": "calculated value",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 860,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "041bf8e023d24404",
+        "type": "debug",
+        "z": "19d8ee8eb5ec6ae6",
+        "name": "object",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "db268b30ce0e2962",
+        "type": "inject",
+        "z": "19d8ee8eb5ec6ae6",
+        "name": "inject value between 1 and 10 for topic B",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "topic B",
+        "payload": "1+$floor($random()*10)",
+        "payloadType": "jsonata",
+        "x": 280,
+        "y": 100,
+        "wires": [
+            [
+                "f273621711d17fd9"
+            ]
+        ]
+    },
+    {
+        "id": "3a71c4de05416f32",
+        "type": "inject",
+        "z": "19d8ee8eb5ec6ae6",
+        "name": "send clear command for topic B",
+        "props": [
+            {
+                "p": "command",
+                "v": "clear",
+                "vt": "str"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "topic B",
+        "x": 250,
+        "y": 180,
+        "wires": [
+            [
+                "f273621711d17fd9"
+            ]
+        ]
+    },
+    {
+        "id": "8a571d3d1f525b0d",
+        "type": "inject",
+        "z": "19d8ee8eb5ec6ae6",
+        "name": "send clearAll command",
+        "props": [
+            {
+                "p": "command",
+                "v": "clearAll",
+                "vt": "str"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "reset all topics",
+        "x": 220,
+        "y": 220,
+        "wires": [
+            [
+                "f273621711d17fd9"
+            ]
+        ]
+    },
+    {
+        "id": "f273621711d17fd9",
+        "type": "binsoul-statistics",
+        "z": "19d8ee8eb5ec6ae6",
+        "outputMethod": "mean",
+        "slotCount": "60",
+        "slotResolutionNumber": 1,
+        "slotResolutionUnit": "seconds",
+        "slotMethod": "mean",
+        "interpolation": "stepAfter",
+        "precision": "infinite",
+        "output1Frequency": "changes",
+        "output2Frequency": "always",
+        "inputValueProperty": "payload",
+        "inputValueSource": "msg",
+        "inputTimestampProperty": "",
+        "inputTimestampSource": "date",
+        "output1ValueProperty": "payload",
+        "output1ValueTarget": "msg",
+        "output2ValueProperty": "payload",
+        "output2ValueTarget": "msg",
+        "updateMode": "never",
+        "updateFrequency": "1",
+        "name": "",
+        "outputs": 2,
+        "x": 610,
+        "y": 80,
+        "wires": [
+            [
+                "917c51a51e435bfe"
+            ],
+            [
+                "041bf8e023d24404"
+            ]
+        ]
+    }
 ]

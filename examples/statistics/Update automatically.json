@@ -1,0 +1,196 @@
+[
+    {
+        "id": "f2e7e21dd23fc453",
+        "type": "tab",
+        "label": "Update automatically",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2bfed010348ae131",
+        "type": "inject",
+        "z": "f2e7e21dd23fc453",
+        "name": "inject value between 1 and 1000 for topic A",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "topic A",
+        "payload": "1+$floor($random()*1000)",
+        "payloadType": "jsonata",
+        "x": 280,
+        "y": 80,
+        "wires": [
+            [
+                "aa812d9c477438ce"
+            ]
+        ]
+    },
+    {
+        "id": "918d8f4dbd30c584",
+        "type": "inject",
+        "z": "f2e7e21dd23fc453",
+        "name": "inject value between 1 and 100 for topic B",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "topic B",
+        "payload": "1+$floor($random()*100)",
+        "payloadType": "jsonata",
+        "x": 280,
+        "y": 120,
+        "wires": [
+            [
+                "aa812d9c477438ce"
+            ]
+        ]
+    },
+    {
+        "id": "aa812d9c477438ce",
+        "type": "binsoul-statistics",
+        "z": "f2e7e21dd23fc453",
+        "outputMethod": "mean",
+        "slotCount": "60",
+        "slotResolutionNumber": 1,
+        "slotResolutionUnit": "seconds",
+        "slotMethod": "mean",
+        "interpolation": "stepAfter",
+        "precision": "infinite",
+        "output1Frequency": "changes",
+        "output2Frequency": "always",
+        "inputValueProperty": "payload",
+        "inputValueSource": "msg",
+        "inputTimestampProperty": "",
+        "inputTimestampSource": "date",
+        "output1ValueProperty": "payload",
+        "output1ValueTarget": "msg",
+        "output2ValueProperty": "payload",
+        "output2ValueTarget": "msg",
+        "updateMode": "events",
+        "updateFrequency": "5",
+        "name": "",
+        "outputs": 2,
+        "x": 610,
+        "y": 100,
+        "wires": [
+            [
+                "f3cddb0959c13111"
+            ],
+            [
+                "db3a1302d6150495"
+            ]
+        ]
+    },
+    {
+        "id": "f3cddb0959c13111",
+        "type": "debug",
+        "z": "f2e7e21dd23fc453",
+        "name": "calculated value",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 860,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "db3a1302d6150495",
+        "type": "debug",
+        "z": "f2e7e21dd23fc453",
+        "name": "object",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "cb9ded65204d5ec0",
+        "type": "inject",
+        "z": "f2e7e21dd23fc453",
+        "name": "inject value between 1 and 10 for topic C",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "topic C",
+        "payload": "1+$floor($random()*10)",
+        "payloadType": "jsonata",
+        "x": 280,
+        "y": 160,
+        "wires": [
+            [
+                "aa812d9c477438ce"
+            ]
+        ]
+    },
+    {
+        "id": "ac681fcd8661a721",
+        "type": "inject",
+        "z": "f2e7e21dd23fc453",
+        "name": "send update command for topic C to delay automatic update",
+        "props": [
+            {
+                "p": "command",
+                "v": "update",
+                "vt": "str"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "topic C",
+        "x": 340,
+        "y": 220,
+        "wires": [
+            [
+                "aa812d9c477438ce"
+            ]
+        ]
+    }
+]

@@ -125,6 +125,8 @@
         "output1ValueTarget": "msg",
         "output2ValueProperty": "payload",
         "output2ValueTarget": "msg",
+        "updateMode": "never",
+        "updateFrequency": "1",
         "name": "",
         "outputs": 2,
         "x": 650,
