@@ -1,2 +1,45 @@
 <script type="text/html" data-help-name="binsoul-statistics">
+    <p>Perform statistical operations on a configurable duration of incoming events.</p>
+
+    <p>Incoming events are grouped by the lowercase topic. Output values are then calculated for each group.</p>
+
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>topic <span class="property-type">string</span></dt>
+        <dd>group of the event</dd>
+        <dt>payload <span class="property-type">number</span></dt>
+        <dd>value of the event</dd>
+        <dt class="optional">timestamp <span class="property-type">number</span></dt>
+        <dd>optional timestamp when the event happened</dd>
+        <dt class="optional">command <span class="property-type">string</span></dt>
+        <dd>optional command to control the node</dd>
+    </dl>
+
+    <h3>Outputs</h3>
+    <ol class="node-ports">
+        <li>Number output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">number</span></dt>
+                <dd>calculated value</dd>
+            </dl>
+        </li>
+        <li>Object output (optional)
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">object</span></dt>
+                <dd>calculated value and other information</dd>
+            </dl>
+        </li>
+    </ol>
+
+    <h3>Commands</h3>
+    <dl class="message-properties">
+        <dt>clear</dt>
+        <dd>clears all events for the given topic</dd>
+        <dt>clearAll</dt>
+        <dd>clears all events of all topics</dd>
+        <dt>update</dt>
+        <dd>calculates an output value for the given topic</dd>
+        <dt>updateAll</dt>
+        <dd>calculates an output value for all topics</dd>
+    </dl>
 </script>
