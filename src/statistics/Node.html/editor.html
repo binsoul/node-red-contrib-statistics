@@ -1,6 +1,6 @@
 <script type="text/html" data-template-name="binsoul-statistics">
     <fieldset>
-        <div class="form-row" data-i18n="[title]binsoul-statistics.label.outputMethod">
+        <div class="form-row" data-i18n="[title]binsoul-statistics.help.outputMethod">
             <label for="node-input-outputMethod">
                 <span data-i18n="binsoul-statistics.label.outputMethod"></span>
             </label>
@@ -26,27 +26,27 @@
             </select>
         </div>
 
-        <div class="form-row" data-i18n="[title]binsoul-statistics.label.slotResolutionNumber">
+        <div class="form-row" data-i18n="[title]binsoul-statistics.help.slotResolution">
             <label for="node-input-slotResolutionNumber">
-                <span data-i18n="binsoul-statistics.label.slotResolutionNumber"></span>
+                <span data-i18n="binsoul-statistics.label.slotResolution"></span>
             </label>
             <div style="display: inline-flex;gap: 10px;width: 70%;">
                 <input type="number" min="1" id="node-input-slotResolutionNumber">
-                <select id="node-input-slotResolutionUnit" data-i18n="[title]binsoul-statistics.label.slotResolutionUnit">
+                <select id="node-input-slotResolutionUnit">
                     <option value="seconds" data-i18n="binsoul-statistics.option.resolution.seconds"></option>
                     <option value="minutes" data-i18n="binsoul-statistics.option.resolution.minutes"></option>
                 </select>
             </div>
         </div>
 
-        <div class="form-row" data-i18n="[title]binsoul-statistics.label.slotCount">
+        <div class="form-row" data-i18n="[title]binsoul-statistics.help.slotCount">
             <label for="node-input-slotCount">
                 <span data-i18n="binsoul-statistics.label.slotCount"></span>
             </label>
             <input type="number" min="2" id="node-input-slotCount">
         </div>
 
-        <div class="form-row" data-i18n="[title]binsoul-statistics.label.slotMethod">
+        <div class="form-row" data-i18n="[title]binsoul-statistics.help.slotMethod">
             <label for="node-input-slotMethod">
                 <span data-i18n="binsoul-statistics.label.slotMethod"></span>
             </label>
@@ -72,7 +72,7 @@
             </select>
         </div>
 
-        <div class="form-row" data-i18n="[title]binsoul-statistics.label.interpolation">
+        <div class="form-row" data-i18n="[title]binsoul-statistics.help.interpolation">
             <label for="node-input-interpolation">
                 <span data-i18n="binsoul-statistics.label.interpolation"></span>
             </label>
@@ -81,7 +81,8 @@
                 <option value="stepAfter" data-i18n="binsoul-statistics.option.interpolation.stepAfter"></option>
             </select>
         </div>
-        <div class="form-row" data-i18n="[title]binsoul-statistics.label.precision">
+
+        <div class="form-row" data-i18n="[title]binsoul-statistics.help.precision">
             <label for="node-input-precision">
                 <span data-i18n="binsoul-statistics.label.precision"></span>
             </label>
@@ -99,28 +100,28 @@
             </select>
         </div>
 
-        <div class="form-row" data-i18n="[title]binsoul-statistics.label.updateMode">
+        <div class="form-row" data-i18n="[title]binsoul-statistics.help.updateMode">
             <label for="node-input-slotResolutionNumber">
                 <span data-i18n="binsoul-statistics.label.updateMode"></span>
             </label>
-            <select id="node-input-updateMode" data-i18n="[title]binsoul-statistics.label.updateMode">
+            <select id="node-input-updateMode">
                 <option value="never" data-i18n="binsoul-statistics.option.updateMode.never"></option>
                 <option value="events" data-i18n="binsoul-statistics.option.updateMode.events"></option>
             </select>
         </div>
 
-        <div class="form-row" data-i18n="[title]binsoul-statistics.label.updateFrequency">
+        <div class="form-row" data-i18n="[title]binsoul-statistics.help.updateFrequency">
             <label for="node-input-updateFrequency">
                 <span data-i18n="binsoul-statistics.label.updateFrequency"></span>
             </label>
             <input type="number" min="1" id="node-input-updateFrequency">
-            <span>Slots</span>
+            <span data-i18n="binsoul-statistics.option.updateFrequency.slots"></span>
         </div>
     </fieldset>
 
     <fieldset>
         <legend data-i18n="binsoul-statistics.group.input"></legend>
-        <div class="form-row" data-i18n="[title]binsoul-statistics.label.inputValue">
+        <div class="form-row" data-i18n="[title]binsoul-statistics.help.inputValue">
             <label for="node-input-inputValueProperty">
                 <span data-i18n="binsoul-statistics.label.inputValue"></span>
             </label>
@@ -128,7 +129,7 @@
             <input type="text" id="node-input-inputValueProperty">
         </div>
 
-        <div class="form-row" data-i18n="[title]binsoul-statistics.label.inputTimestamp">
+        <div class="form-row" data-i18n="[title]binsoul-statistics.help.inputTimestamp">
             <label for="node-input-inputTimestampProperty">
                 <span data-i18n="binsoul-statistics.label.inputTimestamp"></span>
             </label>
@@ -139,7 +140,7 @@
 
     <fieldset>
         <legend data-i18n="binsoul-statistics.group.output1"></legend>
-        <div class="form-row" data-i18n="[title]binsoul-statistics.label.output1Frequency">
+        <div class="form-row" data-i18n="[title]binsoul-statistics.help.output1Frequency">
             <label for="node-input-output1Frequency">
                 <span data-i18n="binsoul-statistics.label.output1Frequency"></span>
             </label>
@@ -149,7 +150,7 @@
             </select>
         </div>
 
-        <div class="form-row" data-i18n="[title]binsoul-statistics.label.output1Value">
+        <div class="form-row" data-i18n="[title]binsoul-statistics.help.output1Value">
             <label for="node-input-output1ValueProperty">
                 <span data-i18n="binsoul-statistics.label.output1Value"></span>
             </label>
@@ -159,7 +160,7 @@
     </fieldset>
     <fieldset>
         <legend data-i18n="binsoul-statistics.group.output2"></legend>
-        <div class="form-row" data-i18n="[title]binsoul-statistics.label.output2Frequency">
+        <div class="form-row" data-i18n="[title]binsoul-statistics.help.output2Frequency">
             <label for="node-input-output2Frequency">
                 <span data-i18n="binsoul-statistics.label.output2Frequency"></span>
             </label>
@@ -170,7 +171,7 @@
             </select>
         </div>
 
-        <div class="form-row" data-i18n="[title]binsoul-statistics.label.output2Value">
+        <div class="form-row" data-i18n="[title]binsoul-statistics.help.output2Value">
             <label for="node-input-output2ValueProperty">
                 <span data-i18n="binsoul-statistics.label.output2Value"></span>
             </label>
@@ -181,7 +182,7 @@
 
     <fieldset>
         <legend data-i18n="binsoul-statistics.group.ui"></legend>
-        <div class="form-row" data-i18n="[title]node-red:common.label.name">
+        <div class="form-row">
             <label for="node-input-name">
                 <i class="fa fa-tag"></i>
                 <span data-i18n="node-red:common.label.name"></span>
