@@ -1,15 +1,30 @@
 import type {Method} from './Method';
 import type {Coordinate} from './Coordinate';
 
+/**
+ * Represent an event.
+ */
 export interface Event {
     value: number,
     timestamp: number,
     slot: number
 }
 
+/**
+ * Stores events and a history of past events.
+ */
 export class Storage {
+    /**
+     * List of current events.
+     */
     private events: Array<Event> = [];
+    /**
+     * List of old events.
+     */
     private history: Array<Event> = [];
+    /**
+     * Indicates if the event list needs to be sorted before generating coordinates.
+     */
     private isUnsorted: boolean = false;
     private readonly calculator: Method;
     private readonly numberOfSlots: number;
@@ -21,6 +36,9 @@ export class Storage {
         this.calculator = calculator;
     }
 
+    /**
+     * Adds an event with the given value and the given timestamp.
+     */
     addEvent(value: number, timestamp: number) {
         let slot = this.getSlot(timestamp);
 
@@ -34,22 +52,28 @@ export class Storage {
             let lastEvent = this.events[this.events.length - 1];
 
             if (typeof lastEvent !== 'undefined' && slot >= lastEvent.slot) {
+                // event with timestamp after the last stored event timestamp
                 this.events.push({
                     value: value,
                     timestamp: timestamp,
                     slot: slot,
                 });
             } else {
+                // event with timestamp before the last stored event timestamp
                 this.events.push({
                     value: value,
                     timestamp: timestamp,
                     slot: slot,
                 });
+
                 this.isUnsorted = true;
             }
         }
     }
 
+    /**
+     * Generates coordinates from the stored events including history.
+     */
     getCoordinates(timestamp: number): Array<Coordinate> {
         this.prepareEvents(timestamp);
 
@@ -62,23 +86,38 @@ export class Storage {
         return result;
     }
 
+    /**
+     * Returns the number of current events.
+     */
     getEventCount(): number {
         return this.events.length;
     }
 
+    /**
+     * Returns the number of events in the history.
+     */
     getHistoryCount(): number {
         return this.history.length;
     }
 
+    /**
+     * Clears the list of events and the history.
+     */
     clear(): void {
         this.events = [];
         this.history = [];
     }
 
+    /**
+     * Calculates a slot for the given timestamp.
+     */
     private getSlot(timestamp: number) {
         return Math.floor(timestamp / this.resolutionInMs) * this.resolutionInMs;
     }
 
+    /**
+     * Prepares the list of events and moves old events to the history.
+     */
     private prepareEvents(timestamp: number): void {
         // sort events if necessary
         if (this.isUnsorted) {
@@ -126,6 +165,9 @@ export class Storage {
         }
     }
 
+    /**
+     * Generates coordinates for a list of events.
+     */
     private buildCoordinates(firstSlot: number, events: Array<Event>): Array<Coordinate> {
         let result = [];
         let index = 0;
@@ -143,6 +185,7 @@ export class Storage {
                 slot = event.slot;
             }
 
+            // Collect values of all events in the same slot
             while (index < events.length) {
                 event = events[index];
                 if (typeof event !== 'undefined') {
@@ -156,11 +199,13 @@ export class Storage {
             }
 
             if (values.length === 1) {
+                // only one event in the slot
                 result.push({
                     x: (slot - firstSlot) / this.resolutionInMs,
                     y: values[0] || 0,
                 });
             } else {
+                // apply the configured slot method to calculate the value
                 result.push({
                     x: (slot - firstSlot) / this.resolutionInMs,
                     y: this.calculator(values),

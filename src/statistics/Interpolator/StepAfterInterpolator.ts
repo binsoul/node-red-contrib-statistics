@@ -1,3 +1,6 @@
+/**
+ * Applies the step after algorithm to the given coordinates to generate an array with the requested length.
+ */
 export function stepAfterInterpolator(coordinates: Array<Record<'x' | 'y', number>>, numberOfSlots: number): Array<number> {
     if (coordinates.length === 0) {
         return Array(numberOfSlots).fill(null);
@@ -24,7 +27,7 @@ export function stepAfterInterpolator(coordinates: Array<Record<'x' | 'y', numbe
         }
     }
 
-    // fill array with inital value
+    // fill array with initial value
     let result = Array(numberOfSlots).fill(firstY);
     if (coordinates.length === 1) {
         return result;

@@ -1,5 +1,8 @@
 import type {Coordinate} from '../Coordinate';
 
+/**
+ * Returns the Y value of all given coordinates if there X value is greater or equal zero.
+ */
 export function noneInterpolator(coordinates: Array<Coordinate>): Array<number> {
     if (coordinates.length === 0) {
         return Array(1).fill(null);

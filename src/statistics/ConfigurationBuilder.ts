@@ -14,6 +14,9 @@ const getString = function(value: any, defaultValue: string): string {
     return result;
 };
 
+/**
+ * Creates a sanitized configuration from user input.
+ */
 export function buildConfiguration(config: UserConfiguration): Configuration {
     let slotCount = Number(config.slotCount || 15);
     let slotResolution = Number(config.slotResolutionNumber || 1) * 1000;

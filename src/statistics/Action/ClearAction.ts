@@ -5,6 +5,9 @@ import {OutputDefinition} from '../Processing/OutputDefinition';
 import {Output} from '../Processing/Output';
 import type {I18nTFunction} from '@node-red/util';
 
+/**
+ * Clears the storage of a value action.
+ */
 export class ClearAction implements Action {
     private readonly valueAction: ValueAction;
     private readonly translate: I18nTFunction;

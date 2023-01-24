@@ -14,6 +14,9 @@ interface MessageData extends NodeMessageInFlow {
     timestamp?: number,
 }
 
+/**
+ * Generates Actions and handles automatic updates.
+ */
 export class ActionFactory implements ActionFactoryInterface {
     private readonly configuration: Configuration;
     private readonly RED: NodeAPI;
@@ -36,8 +39,10 @@ export class ActionFactory implements ActionFactoryInterface {
         }
 
         topic = topic.toLowerCase();
+
         let command = data.command;
         if (typeof command !== 'undefined' && ('' + command).trim() !== '') {
+            // message contains a command
             const valueAction = this.actionsByTopic.get(topic);
             let actions = [];
 
@@ -84,6 +89,7 @@ export class ActionFactory implements ActionFactoryInterface {
             }
         }
 
+        // message contains a new event
         let action = null;
         if (this.actionsByTopic.has(topic)) {
             action = this.actionsByTopic.get(topic);
@@ -115,6 +121,9 @@ export class ActionFactory implements ActionFactoryInterface {
         }
     }
 
+    /**
+     * Updates the displayed id of all actions.
+     */
     private updateActionIds(): void {
         let size = '' + this.actionsByTopic.size;
         let index = 0;
@@ -124,6 +133,9 @@ export class ActionFactory implements ActionFactoryInterface {
         }
     }
 
+    /**
+     * Starts a timer if automatic updates are enabled and no timer exists.
+     */
     private scheduleUpdate(): void {
         const self = this;
 
@@ -137,6 +149,9 @@ export class ActionFactory implements ActionFactoryInterface {
         }, (self.getEndOfSlot(now) - now) + (self.configuration.updateFrequency * self.configuration.slotResolution));
     }
 
+    /**
+     * Handles automatic updates.
+     */
     executeUpdate(): void {
         const now = (new Date()).getTime();
         const startOfSlot = this.getStartOfSlot(now);
@@ -150,6 +165,7 @@ export class ActionFactory implements ActionFactoryInterface {
             let lastEventTimestamp = valueAction.getLastEventTimestamp();
 
             if (valueAction.getEventCount() === 0 || lastUpdateTimestamp === null || lastEventTimestamp === null) {
+                // there are no current events
                 continue;
             }
 
@@ -162,8 +178,10 @@ export class ActionFactory implements ActionFactoryInterface {
             let nextUpdateAt = lastUpdateTimestamp + updateTime;
 
             if (nextUpdateAt <= startOfSlot) {
+                // an update should be triggered
                 updateTopics.push(topic);
             } else {
+                // calculate the shortest time difference for the next timeout
                 if (shortestTimeout === null) {
                     shortestTimeout = updateTime;
                 }
@@ -173,15 +191,18 @@ export class ActionFactory implements ActionFactoryInterface {
         }
 
         if (shortestTimeout !== null) {
+            // generate new timeout
             const self = this;
             self.updateTimer = setTimeout(() => {
                 self.executeUpdate();
             }, shortestTimeout);
         } else {
+            // expire current timeout
             this.updateTimer = null;
         }
 
         for (let topic of updateTopics) {
+            // trigger node.on('input', () => {})
             this.node.receive(<MessageData>{
                 'topic': topic,
                 'command': 'update',

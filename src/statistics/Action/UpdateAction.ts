@@ -6,6 +6,9 @@ import type {ValueAction} from './ValueAction';
 import type {OutputDefinition} from '../Processing/OutputDefinition';
 import type {Output} from '../Processing/Output';
 
+/**
+ * Generates a new output for a value action.
+ */
 export class UpdateAction implements Action {
     private readonly configuration: Configuration;
     private readonly valueAction: ValueAction;

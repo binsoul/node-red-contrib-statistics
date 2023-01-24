@@ -1,5 +1,8 @@
 import type {Message} from './Message';
 
+/**
+ * Contains all resolved input values for an {@link Action}.
+ */
 export class Input {
     private values: Map<string, any>;
     private message: Message;

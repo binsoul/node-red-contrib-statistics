@@ -21,6 +21,9 @@ import {
     variance,
 } from 'simple-statistics';
 
+/**
+ * Builds a method for the given code.
+ */
 export function buildMethod(methodCode: string): Method {
     switch (methodCode) {
         case 'mean':

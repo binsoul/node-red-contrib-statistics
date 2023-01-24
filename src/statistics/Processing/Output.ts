@@ -1,5 +1,8 @@
 import type {NodeStatus} from '@node-red/registry';
 
+/**
+ * Contains all output values of an {@link Action}.
+ */
 export class Output {
     private values: Map<string, any> = new Map();
     private nodeStatus: string | NodeStatus | null = null;

@@ -7,7 +7,7 @@ import {OutputDefinition} from '../Processing/OutputDefinition';
 import {Output} from '../Processing/Output';
 import type {NodeMessage} from 'node-red';
 
-interface HistoryItem {
+interface History {
     lastEventAt: number | null,
     lastUpdateAt: number | null,
     inputValue: number | null
@@ -15,11 +15,14 @@ interface HistoryItem {
     msg: NodeMessage | null,
 }
 
+/**
+ * Stores an event and generates an output.
+ */
 export class ValueAction implements Action {
     private readonly configuration: Configuration;
 
     private readonly storage: Storage;
-    private history: HistoryItem = {
+    private history: History = {
         lastEventAt: null,
         lastUpdateAt: null,
         inputValue: null,
@@ -87,6 +90,9 @@ export class ValueAction implements Action {
         return this.generateOutput(this.history.lastEventAt);
     }
 
+    /**
+     * Generates an output for the given timestamp.
+     */
     generateOutput(timestamp: number): Output {
         let configuration = this.configuration;
         let storage = this.storage;

@@ -9,11 +9,17 @@ import {Input} from './Input';
 import type {OutputValueDefinition} from './OutputDefinition';
 import type {OutputDefinition} from './OutputDefinition';
 
+/**
+ * Adds the "send" and "done" functions to a {@link Message}.
+ */
 interface InternalMessage extends Message {
     send: (message: NodeMessage | Array<NodeMessage | NodeMessage[] | null>) => void,
     done: (error?: Error) => void,
 }
 
+/**
+ * Returns if a given value is numeric.
+ */
 const isNumeric = function(str: any) {
     if (typeof str === 'number') {
         return true;
@@ -26,8 +32,17 @@ const isNumeric = function(str: any) {
     return ! isNaN(<number>(<unknown>str)) && ! isNaN(parseFloat(str));
 };
 
+/**
+ * Receives messages and processes them using {@link Action} objects.
+ */
 export class MessageHandler {
+    /**
+     * List of all unprocessed messages
+     */
     private pendingMessages: Array<InternalMessage> = [];
+    /**
+     * Promise for currently processed message.
+     */
     private activeMessagePromise: Promise<((message: (InternalMessage | void)) => any) | void> | null = null;
     private RED: NodeAPI;
     private node: Node;
@@ -39,6 +54,9 @@ export class MessageHandler {
         this.actionFactory = actionFactory;
     }
 
+    /**
+     * Handles incoming messages.
+     */
     handle(msg: NodeMessageInFlow, send: (message: NodeMessage | Array<NodeMessage | NodeMessage[] | null>) => void, done: (error?: Error) => void) {
         let internalMessage: InternalMessage = {
             data: msg,
@@ -55,6 +73,9 @@ export class MessageHandler {
         this.processMessageQueue();
     };
 
+    /**
+     * Processes all pending messages.
+     */
     private processMessageQueue() {
         const self = this;
 
@@ -75,13 +96,16 @@ export class MessageHandler {
         if (nextMessage) {
             self.activeMessagePromise = self.processMessage(nextMessage)
                 .then(() => {
+                    // process next message
                     self.activeMessagePromise = null;
                     self.processMessageQueue();
                 })
                 .catch((error) => {
                     if (nextMessage) {
+                        // output error
                         if (error instanceof Error) {
                             nextMessage.done(error);
+                            self.node.error(error.message, nextMessage.data);
                             self.node.status({
                                 fill: 'red',
                                 shape: 'dot',
@@ -89,6 +113,7 @@ export class MessageHandler {
                             });
                         } else {
                             nextMessage.done();
+                            self.node.error('error', nextMessage.data);
                             self.node.status({
                                 fill: 'red',
                                 shape: 'dot',
@@ -97,12 +122,16 @@ export class MessageHandler {
                         }
                     }
 
+                    // process next message
                     self.activeMessagePromise = null;
                     self.processMessageQueue();
                 });
         }
     };
 
+    /**
+     * Processes a single message.
+     */
     private processMessage(message: InternalMessage): Promise<void[]> {
         const self = this;
 
@@ -122,6 +151,7 @@ export class MessageHandler {
         let promises = [];
 
         for (let possibleAction of possibleActions) {
+            // generate a Promise for each Action
             let generator = function(action: Action): Promise<void> {
                 return new Promise<void>((resolve, reject) => {
                     let inputDefinition = action.defineInput();
@@ -133,7 +163,7 @@ export class MessageHandler {
                         .then((output: Output) => self.sendMessages(outputDefinition, output, message))
                         .then(function(output: Output) {
                             resolve();
-                            self.updateStatus(output);
+                            self.setNodeStatus(output);
                         })
                         .catch((error: Error) => reject(error));
                 });
@@ -145,6 +175,9 @@ export class MessageHandler {
         return Promise.all(promises);
     };
 
+    /**
+     * Reads all input values of an {@link Action}.
+     */
     private readInputValues(inputDefinition: InputDefinition, message: InternalMessage): Promise<Input> {
         const self = this;
         let promises = [];
@@ -208,6 +241,9 @@ export class MessageHandler {
         });
     };
 
+    /**
+     * Writes all output values of an {@link Action} except msg properties.
+     */
     private writeOutputValues(outputDefinition: OutputDefinition, output: Output): Promise<Output> {
         const self = this;
 
@@ -244,6 +280,9 @@ export class MessageHandler {
         });
     };
 
+    /**
+     * Writes a single output value of an {@link Action}.
+     */
     private setOutputValue(value: any, type: string, property: string): Promise<void> {
         const self = this;
 
@@ -279,6 +318,9 @@ export class MessageHandler {
         });
     }
 
+    /**
+     * Sends all messages generated by an {@link Action}.
+     */
     private sendMessages(outputDefinition: OutputDefinition, output: Output, message: InternalMessage): Output {
         let self = this;
         let messages: Array<NodeMessage | null> | null = null;
@@ -289,11 +331,13 @@ export class MessageHandler {
                 let value = output.getValue(name);
 
                 if (typeof value === 'undefined') {
+                    // Send null message because Action set no output value
                     messages[definition.channel] = messages[definition.channel] || null;
                 } else {
                     let nodeMessage = messages[definition.channel] || definition.message || message.data;
 
                     if (definition.target === 'msg') {
+                        // Write output value into a new message
                         let clonedMessage = self.RED.util.cloneMessage(nodeMessage);
                         if (typeof clonedMessage._msgid !== 'undefined') {
                             clonedMessage._msgid = self.RED.util.generateId();
@@ -312,6 +356,7 @@ export class MessageHandler {
         }
 
         if (messages !== null) {
+            // Remove channel numbers
             let messageValues: Array<NodeMessage | null> = [];
             for (let message of messages) {
                 messageValues.push(message);
@@ -325,7 +370,10 @@ export class MessageHandler {
         return output;
     };
 
-    private updateStatus(output: Output) {
+    /**
+     * Sets the status of the node in the editor.
+     */
+    private setNodeStatus(output: Output) {
         let nodeStatus = output.getNodeStatus();
 
         if (nodeStatus !== null) {

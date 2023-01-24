@@ -1,6 +1,9 @@
 import type {Interpolator} from './Interpolator';
 import type {Method} from './Method';
 
+/**
+ * Sanitized configuration generated from user input.
+ */
 export class Configuration {
     outputMethod: Method;
     slotCount: number;
