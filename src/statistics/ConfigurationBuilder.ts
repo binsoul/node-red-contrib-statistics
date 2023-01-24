@@ -26,7 +26,7 @@ export function buildConfiguration(config: UserConfiguration): Configuration {
     let slotMethod = buildMethod(getString(config.slotMethod, 'mean'));
     let interpolator = buildInterpolator(getString(config.interpolation, 'stepAfter'));
     let precision = getString(config.precision, 'infinite');
-    let updateMode = getString(config.updateMode, 'events');
+    let updateMode = getString(config.updateMode, 'never');
     let updateFrequency = Number(config.updateFrequency || 5);
 
     let output1Frequency = getString(config.output1Frequency, 'changes');

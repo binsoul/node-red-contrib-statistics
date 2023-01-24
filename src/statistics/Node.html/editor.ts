@@ -82,7 +82,7 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
             required: true,
         },
         updateMode: {
-            value: 'events',
+            value: 'never',
             required: true,
         },
         updateFrequency: {

@@ -41,7 +41,7 @@ export class Configuration {
         output1ValueTarget: string = 'msg',
         output2ValueProperty: string = 'payload',
         output2ValueTarget: string = 'msg',
-        updateMode: string = 'events',
+        updateMode: string = 'never',
         updateFrequency: number = 5,
     ) {
         this.outputMethod = outputMethod;
