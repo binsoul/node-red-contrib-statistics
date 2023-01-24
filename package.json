@@ -1,6 +1,6 @@
 {
     "name": "@binsoul/node-red-contrib-statistics",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Perform statistical operations on a configurable duration of incoming events.",
     "keywords": [
         "node-red",
