@@ -26,12 +26,13 @@ If more than one event is received for the same slot this method is used to calc
 
 If there are slots without events this algorithm is used to fill them.
 
-* `No interpolation`
+-   `No interpolation`
 
-  Only the values of received events are used.
-* `Step after`
+    Only the values of received events are used.
 
-  The value of every event is repeated until a new event is received.
+-   `Step after`
+
+    The value of every event is repeated until a new event is received.
 
 #### Fraction digits
 
@@ -41,12 +42,13 @@ The output value is either rounded to this number of fraction digits or output w
 
 If no events are received in a certain time span updates can be triggered automatically.
 
-* `Never`
+-   `Never`
 
-  Automatic updates are disabled.
-* `If no events are received`
+    Automatic updates are disabled.
 
-  An update is triggered repeatedly until the timestamp of the last received event is older than the last slot.
+-   `If no events are received`
+
+    An update is triggered repeatedly until the timestamp of the last received event is older than the last slot.
 
 #### Number of empty slots before update
 
@@ -64,12 +66,13 @@ The timestamp of an event is read from this variable.
 
 Sets how often a message is sent for the number output.
 
-* `Always`
+-   `Always`
 
-  A message is sent for every event received.
-* `If value has changed`
+    A message is sent for every event received.
 
-  A message is only sent if the calculated output value differs from the previous one.
+-   `If value has changed`
+
+    A message is only sent if the calculated output value differs from the previous one.
 
 #### Number output target
 
@@ -79,16 +82,17 @@ The number output is written to this variable.
 
 Sets how often a message is sent for the object output.
 
-* `Always`
+-   `Always`
 
-  A message is sent for every event received.
-* `If value has changed`
+    A message is sent for every event received.
 
-  A message is only sent if the calculated output value differs from the previous one.
+-   `If value has changed`
 
-* `Never`
+    A message is only sent if the calculated output value differs from the previous one.
 
-  The output is disabled.
+-   `Never`
+
+    The output is disabled.
 
 #### Object output target
 

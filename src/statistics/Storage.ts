@@ -1,13 +1,13 @@
-import type {Method} from './Method';
-import type {Coordinate} from './Coordinate';
+import type { Coordinate } from './Coordinate';
+import type { Method } from './Method';
 
 /**
  * Represent an event.
  */
 export interface Event {
-    value: number,
-    timestamp: number,
-    slot: number
+    value: number;
+    timestamp: number;
+    slot: number;
 }
 
 /**
@@ -25,7 +25,7 @@ export class Storage {
     /**
      * Indicates if the event list needs to be sorted before generating coordinates.
      */
-    private isUnsorted: boolean = false;
+    private isUnsorted = false;
     private readonly calculator: Method;
     private readonly numberOfSlots: number;
     private readonly resolutionInMs: number;
@@ -40,7 +40,7 @@ export class Storage {
      * Adds an event with the given value and the given timestamp.
      */
     addEvent(value: number, timestamp: number) {
-        let slot = this.getSlot(timestamp);
+        const slot = this.getSlot(timestamp);
 
         if (this.events.length === 0) {
             this.events.push({
@@ -49,7 +49,7 @@ export class Storage {
                 slot: slot,
             });
         } else {
-            let lastEvent = this.events[this.events.length - 1];
+            const lastEvent = this.events[this.events.length - 1];
 
             if (typeof lastEvent !== 'undefined' && slot >= lastEvent.slot) {
                 // event with timestamp after the last stored event timestamp
@@ -77,8 +77,8 @@ export class Storage {
     getCoordinates(timestamp: number): Array<Coordinate> {
         this.prepareEvents(timestamp);
 
-        let lastSlot = this.getSlot(timestamp);
-        let firstSlot = lastSlot - (this.numberOfSlots - 1) * this.resolutionInMs;
+        const lastSlot = this.getSlot(timestamp);
+        const firstSlot = lastSlot - (this.numberOfSlots - 1) * this.resolutionInMs;
 
         let result = this.buildCoordinates(firstSlot, this.history);
         result = result.concat(this.buildCoordinates(firstSlot, this.events));
@@ -121,7 +121,7 @@ export class Storage {
     private prepareEvents(timestamp: number): void {
         // sort events if necessary
         if (this.isUnsorted) {
-            this.events.sort(function(a, b) {
+            this.events.sort(function (a, b) {
                 return a.timestamp - b.timestamp;
             });
 
@@ -129,11 +129,11 @@ export class Storage {
         }
 
         // move old events to history
-        let lastSlot = this.getSlot(timestamp);
-        let firstSlot = lastSlot - (this.numberOfSlots - 1) * this.resolutionInMs;
+        const lastSlot = this.getSlot(timestamp);
+        const firstSlot = lastSlot - (this.numberOfSlots - 1) * this.resolutionInMs;
 
         while (this.events[0] && this.events[0].timestamp < firstSlot) {
-            let event = this.events.shift();
+            const event = this.events.shift();
             if (typeof event !== 'undefined') {
                 this.history.push(event);
             }
@@ -145,7 +145,7 @@ export class Storage {
             let lastSlot = null;
             let startIndex = 0;
             for (let n = this.history.length - 1; n >= 0; n--) {
-                let historyEvent = this.history[n];
+                const historyEvent = this.history[n];
                 if (typeof historyEvent === 'undefined') {
                     continue;
                 }
@@ -169,11 +169,11 @@ export class Storage {
      * Generates coordinates for a list of events.
      */
     private buildCoordinates(firstSlot: number, events: Array<Event>): Array<Coordinate> {
-        let result = [];
+        const result = [];
         let index = 0;
         let slot = null;
         while (index < events.length) {
-            let values = [];
+            const values = [];
 
             let event = events[index];
             if (typeof event === 'undefined') {

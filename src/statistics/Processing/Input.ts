@@ -1,13 +1,13 @@
-import type {Message} from './Message';
+import type { Message } from './Message';
 
 /**
  * Contains all resolved input values for an {@link Action}.
  */
 export class Input {
-    private values: Map<string, any>;
-    private message: Message;
+    private values: Map<string, unknown>;
+    private readonly message: Message;
 
-    constructor(values: Map<string, any>, message: Message) {
+    constructor(values: Map<string, unknown>, message: Message) {
         this.values = values;
         this.message = message;
     }
@@ -17,16 +17,16 @@ export class Input {
     }
 
     getRequiredValue<T>(key: string): T {
-        let result = this.values.get(key);
+        const result = this.values.get(key);
         if (typeof result === 'undefined') {
             throw new Error(key + ' is undefined.');
         }
 
-        return result;
+        return <T>result;
     }
 
     getOptionalValue<T>(key: string): T | undefined {
-        return this.values.get(key);
+        return <T | undefined>this.values.get(key);
     }
 
     getMessage(): Message {

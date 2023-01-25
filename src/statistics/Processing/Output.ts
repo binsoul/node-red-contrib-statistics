@@ -1,10 +1,10 @@
-import type {NodeStatus} from '@node-red/registry';
+import type { NodeStatus } from '@node-red/registry';
 
 /**
  * Contains all output values of an {@link Action}.
  */
 export class Output {
-    private values: Map<string, any> = new Map();
+    private values: Map<string, unknown> = new Map();
     private nodeStatus: string | NodeStatus | null = null;
 
     hasValue(key: string): boolean {
@@ -12,10 +12,10 @@ export class Output {
     }
 
     getValue<T>(key: string): T | undefined {
-        return this.values.get(key);
+        return <T | undefined>this.values.get(key);
     }
 
-    setValue(key: string, value: any): void {
+    setValue(key: string, value: unknown): void {
         this.values.set(key, value);
     }
 

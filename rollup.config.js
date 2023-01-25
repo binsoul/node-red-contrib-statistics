@@ -1,8 +1,7 @@
+import typescript from '@rollup/plugin-typescript';
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
-import typescript from '@rollup/plugin-typescript';
-
 import packageJson from './package.json';
 
 const allNodeTypes = Object.keys(packageJson['node-red'].nodes);
@@ -21,7 +20,7 @@ const htmlWatch = () => {
 const htmlBundle = () => {
     return {
         name: 'htmlBundle',
-        renderChunk(code, chunk, _options) {
+        renderChunk(code, chunk) {
             const editorDir = path.dirname(chunk.facadeModuleId);
             const htmlFiles = glob.sync(path.join(editorDir, '*.html'));
             const htmlContents = htmlFiles.map((fPath) => fs.readFileSync(fPath));
@@ -30,22 +29,22 @@ const htmlBundle = () => {
 
             return {
                 code,
-                map: {mappings: ''},
+                map: { mappings: '' },
             };
         },
     };
 };
 
 const makePlugins = (nodeType) => [
-    htmlWatch(), typescript({
+    htmlWatch(),
+    typescript({
         lib: ['es5', 'es6', 'dom'],
-        include: [
-            `src/${nodeType}/Node.html/**/*.ts`, `src/${nodeType}/**/*.d.ts`,
-        ],
+        include: [`src/${nodeType}/Node.html/**/*.ts`, `src/${nodeType}/**/*.d.ts`],
         target: 'es5',
         tsconfig: false,
         noEmitOnError: false,
-    }), htmlBundle(),
+    }),
+    htmlBundle(),
 ];
 
 const makeConfigItem = (nodeType) => ({

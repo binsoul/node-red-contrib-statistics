@@ -1,9 +1,9 @@
-import type {Action} from '../Processing/Action';
-import {InputDefinition} from '../Processing/InputDefinition';
-import type {ValueAction} from './ValueAction';
-import {OutputDefinition} from '../Processing/OutputDefinition';
-import {Output} from '../Processing/Output';
-import type {I18nTFunction} from '@node-red/util';
+import type { I18nTFunction } from '@node-red/util';
+import type { Action } from '../Processing/Action';
+import { InputDefinition } from '../Processing/InputDefinition';
+import { Output } from '../Processing/Output';
+import { OutputDefinition } from '../Processing/OutputDefinition';
+import type { ValueAction } from './ValueAction';
 
 /**
  * Clears the storage of a value action.
@@ -28,7 +28,7 @@ export class ClearAction implements Action {
     execute(): Output {
         this.valueAction.clear();
 
-        let output = new Output();
+        const output = new Output();
         output.setNodeStatus({
             fill: 'yellow',
             shape: 'dot',
@@ -36,5 +36,5 @@ export class ClearAction implements Action {
         });
 
         return output;
-    };
+    }
 }

@@ -5,27 +5,26 @@ export interface InputValueDefinition {
     /**
      * Object, e.g. msg, flow or global, where the input value should be read from.
      */
-    source: string,
+    source: string;
     /**
      * Property of the object where the input value should be read from.
      */
-    property: string,
+    property: string;
     /**
      * Type of the value
      */
-    type: string,
+    type: string;
     /**
      * Indicates if the input value is required or optional.
      */
-    required: boolean
+    required: boolean;
     /**
      * Will be used as the default if no input value can be read.
      */
-    default?: any
+    default?: unknown;
 }
 
 /**
  * Defines a list of input values for an {@link Action}.
  */
-export class InputDefinition extends Map<string, InputValueDefinition> {
-}
+export class InputDefinition extends Map<string, InputValueDefinition> {}

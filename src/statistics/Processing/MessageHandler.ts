@@ -1,26 +1,25 @@
-import type {NodeMessage, NodeMessageInFlow} from 'node-red';
-import type {Action} from './Action';
-import type {InputDefinition, InputValueDefinition} from './InputDefinition';
-import type {Output} from './Output';
-import type {Message} from './Message';
-import type {ActionFactory} from './ActionFactory';
-import type {Node, NodeAPI} from '@node-red/registry';
-import {Input} from './Input';
-import type {OutputValueDefinition} from './OutputDefinition';
-import type {OutputDefinition} from './OutputDefinition';
+import type { Node, NodeAPI } from '@node-red/registry';
+import type { NodeMessage, NodeMessageInFlow } from 'node-red';
+import type { Action } from './Action';
+import type { ActionFactory } from './ActionFactory';
+import { Input } from './Input';
+import type { InputDefinition, InputValueDefinition } from './InputDefinition';
+import type { Message } from './Message';
+import type { Output } from './Output';
+import type { OutputDefinition, OutputValueDefinition } from './OutputDefinition';
 
 /**
  * Adds the "send" and "done" functions to a {@link Message}.
  */
 interface InternalMessage extends Message {
-    send: (message: NodeMessage | Array<NodeMessage | NodeMessage[] | null>) => void,
-    done: (error?: Error) => void,
+    send: (message: NodeMessage | Array<NodeMessage | NodeMessage[] | null>) => void;
+    done: (error?: Error) => void;
 }
 
 /**
  * Returns if a given value is numeric.
  */
-const isNumeric = function(str: any) {
+const isNumeric = function (str: unknown) {
     if (typeof str === 'number') {
         return true;
     }
@@ -29,7 +28,7 @@ const isNumeric = function(str: any) {
         return false;
     }
 
-    return ! isNaN(<number>(<unknown>str)) && ! isNaN(parseFloat(str));
+    return !isNaN(<number>(<unknown>str)) && !isNaN(parseFloat(str));
 };
 
 /**
@@ -43,7 +42,7 @@ export class MessageHandler {
     /**
      * Promise for currently processed message.
      */
-    private activeMessagePromise: Promise<((message: (InternalMessage | void)) => any) | void> | null = null;
+    private activeMessagePromise: Promise<((message: InternalMessage | void) => unknown) | void> | null = null;
     private RED: NodeAPI;
     private node: Node;
     private actionFactory: ActionFactory;
@@ -58,7 +57,7 @@ export class MessageHandler {
      * Handles incoming messages.
      */
     handle(msg: NodeMessageInFlow, send: (message: NodeMessage | Array<NodeMessage | NodeMessage[] | null>) => void, done: (error?: Error) => void) {
-        let internalMessage: InternalMessage = {
+        const internalMessage: InternalMessage = {
             data: msg,
             timestamp: new Date().getTime(),
             send: send,
@@ -71,22 +70,20 @@ export class MessageHandler {
         }
 
         this.processMessageQueue();
-    };
+    }
 
     /**
      * Processes all pending messages.
      */
     private processMessageQueue() {
-        const self = this;
-
-        if (self.pendingMessages.length === 0) {
-            self.activeMessagePromise = null;
+        if (this.pendingMessages.length === 0) {
+            this.activeMessagePromise = null;
             return;
         }
 
         let nextMessage: InternalMessage | null = null;
-        while (self.pendingMessages.length > 0) {
-            let item = self.pendingMessages.shift();
+        while (this.pendingMessages.length > 0) {
+            const item = this.pendingMessages.shift();
             if (typeof item !== 'undefined') {
                 nextMessage = item;
                 break;
@@ -94,27 +91,27 @@ export class MessageHandler {
         }
 
         if (nextMessage) {
-            self.activeMessagePromise = self.processMessage(nextMessage)
+            this.activeMessagePromise = this.processMessage(nextMessage)
                 .then(() => {
                     // process next message
-                    self.activeMessagePromise = null;
-                    self.processMessageQueue();
+                    this.activeMessagePromise = null;
+                    this.processMessageQueue();
                 })
                 .catch((error) => {
                     if (nextMessage) {
                         // output error
                         if (error instanceof Error) {
                             nextMessage.done(error);
-                            self.node.error(error.message, nextMessage.data);
-                            self.node.status({
+                            this.node.error(error.message, nextMessage.data);
+                            this.node.status({
                                 fill: 'red',
                                 shape: 'dot',
                                 text: error.message,
                             });
                         } else {
                             nextMessage.done();
-                            self.node.error('error', nextMessage.data);
-                            self.node.status({
+                            this.node.error('error', nextMessage.data);
+                            this.node.status({
                                 fill: 'red',
                                 shape: 'dot',
                                 text: 'error',
@@ -123,24 +120,22 @@ export class MessageHandler {
                     }
 
                     // process next message
-                    self.activeMessagePromise = null;
-                    self.processMessageQueue();
+                    this.activeMessagePromise = null;
+                    this.processMessageQueue();
                 });
         }
-    };
+    }
 
     /**
      * Processes a single message.
      */
     private processMessage(message: InternalMessage): Promise<void[]> {
-        const self = this;
-
-        let possibleActions = self.actionFactory.build(message);
+        let possibleActions = this.actionFactory.build(message);
         if (possibleActions === null) {
             return Promise.resolve([]);
         }
 
-        if (! Array.isArray(possibleActions)) {
+        if (!Array.isArray(possibleActions)) {
             possibleActions = [possibleActions];
         }
 
@@ -148,22 +143,22 @@ export class MessageHandler {
             return Promise.resolve([]);
         }
 
-        let promises = [];
+        const promises = [];
 
-        for (let possibleAction of possibleActions) {
+        for (const possibleAction of possibleActions) {
             // generate a Promise for each Action
-            let generator = function(action: Action): Promise<void> {
+            const generator = (action: Action): Promise<void> => {
                 return new Promise<void>((resolve, reject) => {
-                    let inputDefinition = action.defineInput();
-                    let outputDefinition = action.defineOutput();
+                    const inputDefinition = action.defineInput();
+                    const outputDefinition = action.defineOutput();
 
-                    self.readInputValues(inputDefinition, message)
+                    this.readInputValues(inputDefinition, message)
                         .then((input: Input) => action.execute(input))
-                        .then((output: Output) => self.writeOutputValues(outputDefinition, output))
-                        .then((output: Output) => self.sendMessages(outputDefinition, output, message))
-                        .then(function(output: Output) {
+                        .then((output: Output) => this.writeOutputValues(outputDefinition, output))
+                        .then((output: Output) => this.sendMessages(outputDefinition, output, message))
+                        .then((output: Output) => {
                             resolve();
-                            self.setNodeStatus(output);
+                            this.setNodeStatus(output);
                         })
                         .catch((error: Error) => reject(error));
                 });
@@ -173,22 +168,21 @@ export class MessageHandler {
         }
 
         return Promise.all(promises);
-    };
+    }
 
     /**
      * Reads all input values of an {@link Action}.
      */
     private readInputValues(inputDefinition: InputDefinition, message: InternalMessage): Promise<Input> {
-        const self = this;
-        let promises = [];
+        const promises = [];
 
-        for (let [name, definition] of inputDefinition.entries()) {
+        for (const [name, definition] of inputDefinition.entries()) {
             if (definition.source === 'date') {
                 promises.push(Promise.resolve([name, message.timestamp]));
             } else {
-                let generator = function(name: string, definition: InputValueDefinition): Promise<any> {
-                    return new Promise<any>((resolve, reject) => {
-                        self.RED.util.evaluateNodeProperty(definition.property, definition.source, self.node, message.data, (error: Error | null, value: any) => {
+                const generator = (name: string, definition: InputValueDefinition): Promise<[string, unknown]> => {
+                    return new Promise((resolve, reject) => {
+                        this.RED.util.evaluateNodeProperty(definition.property, definition.source, this.node, message.data, (error: Error | null, value: unknown) => {
                             if (error) {
                                 value = definition.default;
 
@@ -226,43 +220,39 @@ export class MessageHandler {
             }
         }
 
-        let allPromises = Promise.all(promises);
-        return new Promise<Input>((resolve, reject) => {
+        const allPromises = Promise.all(promises);
+        return new Promise((resolve, reject) => {
             allPromises
-                .then((values: Array<[string, any]>) => {
-                    const map = new Map();
-                    for (let value of values) {
-                        map.set(value[0], value[1]);
+                .then((values: ((string | unknown)[] | [string, unknown])[]) => {
+                    const map = new Map<string, unknown>();
+                    for (const value of values) {
+                        map.set(<string>value[0], value[1]);
                     }
 
                     resolve(new Input(map, message));
                 })
                 .catch((error) => reject(error));
         });
-    };
+    }
 
     /**
      * Writes all output values of an {@link Action} except msg properties.
      */
     private writeOutputValues(outputDefinition: OutputDefinition, output: Output): Promise<Output> {
-        const self = this;
-
-        let promises = [];
+        const promises = [];
 
         if (outputDefinition.size === 0) {
             return Promise.resolve(output);
         }
 
-        for (let [name, definition] of outputDefinition.entries()) {
-            let value = output.getValue(name);
+        for (const [name, definition] of outputDefinition.entries()) {
+            const value = output.getValue(name);
             if (typeof value === 'undefined') {
                 continue;
             }
 
             if (definition.target !== 'msg') {
-                let generator = function(definition: OutputValueDefinition, value: any): Promise<void> {
-                    return self.setOutputValue(value, definition.target, definition.property);
-                };
+                const generator = (definition: OutputValueDefinition, value: unknown): Promise<void> => this.setOutputValue(value, definition.target, definition.property);
 
                 promises.push(generator(definition, value));
             }
@@ -272,26 +262,22 @@ export class MessageHandler {
             return Promise.resolve(output);
         }
 
-        let allPromises = Promise.all(promises);
+        const allPromises = Promise.all(promises);
         return new Promise<Output>((resolve, reject) => {
-            allPromises
-                .then(() => resolve(output))
-                .catch((error) => reject(error));
+            allPromises.then(() => resolve(output)).catch((error) => reject(error));
         });
-    };
+    }
 
     /**
      * Writes a single output value of an {@link Action}.
      */
-    private setOutputValue(value: any, type: string, property: string): Promise<void> {
-        const self = this;
-
+    private setOutputValue(value: unknown, type: string, property: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             if (type === 'msg') {
                 // handled by sendMessages
             } else if (type === 'flow' || type === 'global') {
-                let target = self.node.context()[type];
-                let callback = (err: Error) => {
+                const target = this.node.context()[type];
+                const callback = (err: Error) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -299,19 +285,19 @@ export class MessageHandler {
                     }
                 };
 
-                let contextKey = self.RED.util.parseContextStore(property);
+                const contextKey = this.RED.util.parseContextStore(property);
+
                 if (/\[msg/.test(contextKey.key)) {
-                    let key = [];
-                    let parts = self.RED.util.normalisePropertyExpression(contextKey.key);
-                    for (let part of parts) {
+                    const key = [];
+                    const parts = this.RED.util.normalisePropertyExpression(contextKey.key);
+                    for (const part of parts) {
                         key.push('' + part);
                     }
 
-                    target.set(key, value, contextKey.store, callback);
+                    target.set(key.join('.'), value, contextKey.store, callback);
                 } else {
                     target.set(contextKey.key, value, contextKey.store, callback);
                 }
-
             } else {
                 reject(new Error('Unknown type ' + type + '.'));
             }
@@ -322,28 +308,27 @@ export class MessageHandler {
      * Sends all messages generated by an {@link Action}.
      */
     private sendMessages(outputDefinition: OutputDefinition, output: Output, message: InternalMessage): Output {
-        let self = this;
         let messages: Array<NodeMessage | null> | null = null;
 
         if (outputDefinition.size > 0) {
             messages = [];
-            for (let [name, definition] of outputDefinition.entries()) {
-                let value = output.getValue(name);
+            for (const [name, definition] of outputDefinition.entries()) {
+                const value = output.getValue(name);
 
                 if (typeof value === 'undefined') {
                     // Send null message because Action set no output value
                     messages[definition.channel] = messages[definition.channel] || null;
                 } else {
-                    let nodeMessage = messages[definition.channel] || definition.message || message.data;
+                    const nodeMessage = messages[definition.channel] || definition.message || message.data;
 
                     if (definition.target === 'msg') {
                         // Write output value into a new message
-                        let clonedMessage = self.RED.util.cloneMessage(nodeMessage);
+                        const clonedMessage = this.RED.util.cloneMessage(nodeMessage);
                         if (typeof clonedMessage._msgid !== 'undefined') {
-                            clonedMessage._msgid = self.RED.util.generateId();
+                            clonedMessage._msgid = this.RED.util.generateId();
                         }
 
-                        if (! self.RED.util.setMessageProperty(clonedMessage, definition.property, value, true)) {
+                        if (!this.RED.util.setMessageProperty(clonedMessage, definition.property, value, true)) {
                             throw new Error(`Failed to set message property "${definition.property}".`);
                         }
 
@@ -357,8 +342,8 @@ export class MessageHandler {
 
         if (messages !== null) {
             // Remove channel numbers
-            let messageValues: Array<NodeMessage | null> = [];
-            for (let message of messages) {
+            const messageValues: Array<NodeMessage | null> = [];
+            for (const message of messages) {
                 messageValues.push(message);
             }
 
@@ -368,16 +353,16 @@ export class MessageHandler {
         message.done();
 
         return output;
-    };
+    }
 
     /**
      * Sets the status of the node in the editor.
      */
     private setNodeStatus(output: Output) {
-        let nodeStatus = output.getNodeStatus();
+        const nodeStatus = output.getNodeStatus();
 
         if (nodeStatus !== null) {
             this.node.status(nodeStatus);
         }
-    };
+    }
 }

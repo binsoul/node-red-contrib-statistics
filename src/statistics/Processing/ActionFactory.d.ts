@@ -1,5 +1,5 @@
-import type {Message} from './Processing/Message';
-import type {Action} from './Processing/Action';
+import type { Action } from './Processing/Action';
+import type { Message } from './Processing/Message';
 
 /**
  * Builds an {@link Action} for a {@link Message}.

@@ -10,7 +10,7 @@ export function stepAfterInterpolator(coordinates: Array<Record<'x' | 'y', numbe
     let firstY = null;
 
     for (let index = 0; index < coordinates.length; index++) {
-        let coordinate = coordinates[index];
+        const coordinate = coordinates[index];
         if (typeof coordinate === 'undefined') {
             continue;
         }
@@ -28,15 +28,15 @@ export function stepAfterInterpolator(coordinates: Array<Record<'x' | 'y', numbe
     }
 
     // fill array with initial value
-    let result = Array(numberOfSlots).fill(firstY);
+    const result = Array(numberOfSlots).fill(firstY);
     if (coordinates.length === 1) {
         return result;
     }
 
     // fill holes between coordinates
     for (let index = startIndex; index < coordinates.length - 1; index++) {
-        let currentCoordinate = coordinates[index];
-        let nextCoordinate = coordinates[index + 1];
+        const currentCoordinate = coordinates[index];
+        const nextCoordinate = coordinates[index + 1];
 
         if (typeof currentCoordinate === 'undefined' || typeof nextCoordinate === 'undefined') {
             continue;
@@ -49,7 +49,7 @@ export function stepAfterInterpolator(coordinates: Array<Record<'x' | 'y', numbe
 
     // fill array to the end
     for (let index = coordinates.length - 1; index >= 0; index--) {
-        let lastCoordinate = coordinates[index];
+        const lastCoordinate = coordinates[index];
         if (typeof lastCoordinate !== 'undefined') {
             for (let n = lastCoordinate.x; n < numberOfSlots; n++) {
                 result[n] = lastCoordinate.y;

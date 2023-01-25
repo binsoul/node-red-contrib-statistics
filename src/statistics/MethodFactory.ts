@@ -1,5 +1,3 @@
-import type {Method} from './Method';
-
 import {
     geometricMean,
     harmonicMean,
@@ -20,6 +18,7 @@ import {
     uniqueCountSorted,
     variance,
 } from 'simple-statistics';
+import type { Method } from './Method';
 
 /**
  * Builds a method for the given code.
@@ -39,8 +38,8 @@ export function buildMethod(methodCode: string): Method {
         case 'product':
             return product;
         case 'uniqueCount':
-            return function(values: Array<number>): number {
-                let copy = values.slice();
+            return function (values: Array<number>): number {
+                const copy = values.slice();
                 copy.sort((a, b) => a - b);
 
                 return uniqueCountSorted(copy);

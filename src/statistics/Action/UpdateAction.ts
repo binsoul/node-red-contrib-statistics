@@ -1,10 +1,10 @@
-import type {Action} from '../Processing/Action';
-import type {Configuration} from '../Configuration';
-import type {Input} from '../Processing/Input';
-import {InputDefinition} from '../Processing/InputDefinition';
-import type {ValueAction} from './ValueAction';
-import type {OutputDefinition} from '../Processing/OutputDefinition';
-import type {Output} from '../Processing/Output';
+import type { Configuration } from '../Configuration';
+import type { Action } from '../Processing/Action';
+import type { Input } from '../Processing/Input';
+import { InputDefinition } from '../Processing/InputDefinition';
+import type { Output } from '../Processing/Output';
+import type { OutputDefinition } from '../Processing/OutputDefinition';
+import type { ValueAction } from './ValueAction';
 
 /**
  * Generates a new output for a value action.
@@ -35,7 +35,7 @@ export class UpdateAction implements Action {
         const definition = this.valueAction.defineOutput();
 
         const lastMessage = this.valueAction.getLastMessage();
-        for (let output of definition.values()) {
+        for (const output of definition.values()) {
             output.message = lastMessage;
         }
 
@@ -49,5 +49,5 @@ export class UpdateAction implements Action {
         }
 
         return this.valueAction.generateOutput(timestamp);
-    };
+    }
 }

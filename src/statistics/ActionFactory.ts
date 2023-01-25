@@ -1,17 +1,17 @@
-import {setTimeout, clearTimeout} from 'timers';
-import type {Configuration} from './Configuration';
-import {ValueAction} from './Action/ValueAction';
-import type {Message} from './Processing/Message';
-import type {Action} from './Processing/Action';
-import type {ActionFactory as ActionFactoryInterface} from './Processing/ActionFactory';
-import {UpdateAction} from './Action/UpdateAction';
-import type {NodeMessageInFlow} from 'node-red';
-import {ClearAction} from './Action/ClearAction';
-import type {Node, NodeAPI} from '@node-red/registry';
+import type { Node, NodeAPI } from '@node-red/registry';
+import type { NodeMessageInFlow } from 'node-red';
+import { clearTimeout, setTimeout } from 'timers';
+import { ClearAction } from './Action/ClearAction';
+import { UpdateAction } from './Action/UpdateAction';
+import { ValueAction } from './Action/ValueAction';
+import type { Configuration } from './Configuration';
+import type { Action } from './Processing/Action';
+import type { ActionFactory as ActionFactoryInterface } from './Processing/ActionFactory';
+import type { Message } from './Processing/Message';
 
 interface MessageData extends NodeMessageInFlow {
-    command?: string,
-    timestamp?: number,
+    command?: string;
+    timestamp?: number;
 }
 
 /**
@@ -32,7 +32,7 @@ export class ActionFactory implements ActionFactoryInterface {
     }
 
     build(message: Message): Action | Array<Action> | null {
-        let data: MessageData = message.data;
+        const data: MessageData = message.data;
         let topic = data.topic;
         if (typeof topic === 'undefined' || ('' + topic).trim() === '') {
             return null;
@@ -40,11 +40,11 @@ export class ActionFactory implements ActionFactoryInterface {
 
         topic = topic.toLowerCase();
 
-        let command = data.command;
+        const command = data.command;
         if (typeof command !== 'undefined' && ('' + command).trim() !== '') {
             // message contains a command
             const valueAction = this.actionsByTopic.get(topic);
-            let actions = [];
+            const actions = [];
 
             switch (command.toLowerCase()) {
                 case 'update':
@@ -56,7 +56,7 @@ export class ActionFactory implements ActionFactoryInterface {
 
                     return new UpdateAction(this.configuration, valueAction);
                 case 'updateall':
-                    for (let valueAction of this.actionsByTopic.values()) {
+                    for (const valueAction of this.actionsByTopic.values()) {
                         actions.push(new UpdateAction(this.configuration, valueAction));
                     }
 
@@ -70,7 +70,7 @@ export class ActionFactory implements ActionFactoryInterface {
 
                     return new ClearAction(valueAction, this.RED._);
                 case 'clearall':
-                    for (let valueAction of this.actionsByTopic.values()) {
+                    for (const valueAction of this.actionsByTopic.values()) {
                         actions.push(new ClearAction(valueAction, this.RED._));
                     }
 
@@ -125,9 +125,9 @@ export class ActionFactory implements ActionFactoryInterface {
      * Updates the displayed id of all actions.
      */
     private updateActionIds(): void {
-        let size = '' + this.actionsByTopic.size;
+        const size = '' + this.actionsByTopic.size;
         let index = 0;
-        for (let action of this.actionsByTopic.values()) {
+        for (const action of this.actionsByTopic.values()) {
             index++;
             action.setId(('' + index).padStart(size.length, '0'));
         }
@@ -137,32 +137,28 @@ export class ActionFactory implements ActionFactoryInterface {
      * Starts a timer if automatic updates are enabled and no timer exists.
      */
     private scheduleUpdate(): void {
-        const self = this;
-
-        if (self.updateTimer !== null || self.configuration.updateMode === 'never') {
+        if (this.updateTimer !== null || this.configuration.updateMode === 'never') {
             return;
         }
 
-        const now = (new Date()).getTime();
-        self.updateTimer = setTimeout(() => {
-            self.executeUpdate();
-        }, (self.getEndOfSlot(now) - now) + (self.configuration.updateFrequency * self.configuration.slotResolution));
+        const now = new Date().getTime();
+        this.updateTimer = setTimeout(() => this.executeUpdate(), this.getEndOfSlot(now) - now + this.configuration.updateFrequency * this.configuration.slotResolution);
     }
 
     /**
      * Handles automatic updates.
      */
     executeUpdate(): void {
-        const now = (new Date()).getTime();
+        const now = new Date().getTime();
         const startOfSlot = this.getStartOfSlot(now);
         const updateTime = (this.configuration.updateFrequency + 1) * this.configuration.slotResolution;
 
         let shortestTimeout = null;
-        let updateTopics = [];
+        const updateTopics = [];
 
-        for (let [topic, valueAction] of this.actionsByTopic) {
+        for (const [topic, valueAction] of this.actionsByTopic) {
             let lastUpdateTimestamp = valueAction.getLastUpdateTimestamp();
-            let lastEventTimestamp = valueAction.getLastEventTimestamp();
+            const lastEventTimestamp = valueAction.getLastEventTimestamp();
 
             if (valueAction.getEventCount() === 0 || lastUpdateTimestamp === null || lastEventTimestamp === null) {
                 // there are no current events
@@ -175,7 +171,7 @@ export class ActionFactory implements ActionFactoryInterface {
                 lastUpdateTimestamp = this.getStartOfSlot(lastUpdateTimestamp);
             }
 
-            let nextUpdateAt = lastUpdateTimestamp + updateTime;
+            const nextUpdateAt = lastUpdateTimestamp + updateTime;
 
             if (nextUpdateAt <= startOfSlot) {
                 // an update should be triggered
@@ -192,21 +188,18 @@ export class ActionFactory implements ActionFactoryInterface {
 
         if (shortestTimeout !== null) {
             // generate new timeout
-            const self = this;
-            self.updateTimer = setTimeout(() => {
-                self.executeUpdate();
-            }, shortestTimeout);
+            this.updateTimer = setTimeout(() => this.executeUpdate(), shortestTimeout);
         } else {
             // expire current timeout
             this.updateTimer = null;
         }
 
-        for (let topic of updateTopics) {
+        for (const topic of updateTopics) {
             // trigger node.on('input', () => {})
             this.node.receive(<MessageData>{
-                'topic': topic,
-                'command': 'update',
-                'timestamp': now,
+                topic: topic,
+                command: 'update',
+                timestamp: now,
             });
         }
     }

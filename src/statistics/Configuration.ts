@@ -1,5 +1,5 @@
-import type {Interpolator} from './Interpolator';
-import type {Method} from './Method';
+import type { Interpolator } from './Interpolator';
+import type { Method } from './Method';
 
 /**
  * Sanitized configuration generated from user input.
@@ -28,24 +28,24 @@ export class Configuration {
 
     constructor(
         outputMethod: Method,
-        slotCount: number = 15,
-        slotResolution: number = 15 * 60 * 1000,
+        slotCount = 15,
+        slotResolution = 900000,
         slotMethod: Method,
         interpolator: Interpolator,
-        precision: string,
-        output1Frequency: string = 'changes',
-        output2Frequency: string = 'never',
-        outputMethodCode: string = 'mean',
-        inputValueProperty: string = 'payload',
-        inputValueSource: string = 'msg',
-        inputTimestampProperty: string = '',
-        inputTimestampSource: string = 'date',
-        output1ValueProperty: string = 'payload',
-        output1ValueTarget: string = 'msg',
-        output2ValueProperty: string = 'payload',
-        output2ValueTarget: string = 'msg',
-        updateMode: string = 'never',
-        updateFrequency: number = 5,
+        precision = 'infinite',
+        output1Frequency = 'changes',
+        output2Frequency = 'never',
+        outputMethodCode = 'mean',
+        inputValueProperty = 'payload',
+        inputValueSource = 'msg',
+        inputTimestampProperty = '',
+        inputTimestampSource = 'date',
+        output1ValueProperty = 'payload',
+        output1ValueTarget = 'msg',
+        output2ValueProperty = 'payload',
+        output2ValueTarget = 'msg',
+        updateMode = 'never',
+        updateFrequency = 5,
     ) {
         this.outputMethod = outputMethod;
         this.slotCount = slotCount;

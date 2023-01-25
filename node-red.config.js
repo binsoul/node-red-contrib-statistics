@@ -1,5 +1,4 @@
 module.exports = {
-
     /*******************************************************************************
      * Flow File and User Directory Settings
      *  - flowFile

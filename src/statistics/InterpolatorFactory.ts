@@ -1,6 +1,6 @@
-import type {Interpolator} from './Interpolator';
-import {noneInterpolator} from './Interpolator/NoneInterpolator';
-import {stepAfterInterpolator} from './Interpolator/StepAfterInterpolator';
+import type { Interpolator } from './Interpolator';
+import { noneInterpolator } from './Interpolator/NoneInterpolator';
+import { stepAfterInterpolator } from './Interpolator/StepAfterInterpolator';
 
 /**
  * Builds an interpolator for the given code.

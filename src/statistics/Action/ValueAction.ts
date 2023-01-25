@@ -1,18 +1,18 @@
-import type {Action} from '../Processing/Action';
-import type {Configuration} from '../Configuration';
-import type {Input} from '../Processing/Input';
-import {Storage} from '../Storage';
-import {InputDefinition} from '../Processing/InputDefinition';
-import {OutputDefinition} from '../Processing/OutputDefinition';
-import {Output} from '../Processing/Output';
-import type {NodeMessage} from 'node-red';
+import type { NodeMessage } from 'node-red';
+import type { Configuration } from '../Configuration';
+import type { Action } from '../Processing/Action';
+import type { Input } from '../Processing/Input';
+import { InputDefinition } from '../Processing/InputDefinition';
+import { Output } from '../Processing/Output';
+import { OutputDefinition } from '../Processing/OutputDefinition';
+import { Storage } from '../Storage';
 
 interface History {
-    lastEventAt: number | null,
-    lastUpdateAt: number | null,
-    inputValue: number | null
-    outputValue: number | null
-    msg: NodeMessage | null,
+    lastEventAt: number | null;
+    lastUpdateAt: number | null;
+    inputValue: number | null;
+    outputValue: number | null;
+    msg: NodeMessage | null;
 }
 
 /**
@@ -30,7 +30,7 @@ export class ValueAction implements Action {
         msg: null,
     };
 
-    private id: string = '';
+    private id = '';
 
     constructor(configuration: Configuration) {
         this.configuration = configuration;
@@ -78,12 +78,12 @@ export class ValueAction implements Action {
     }
 
     execute(input: Input): Output {
-        let timestamp = input.getRequiredValue<number>('timestamp');
-        let inputValue = input.getRequiredValue<number>('value');
+        const timestamp = input.getRequiredValue<number>('timestamp');
+        const inputValue = input.getRequiredValue<number>('value');
 
         this.storage.addEvent(inputValue, timestamp);
 
-        this.history.lastEventAt = (new Date()).getTime();
+        this.history.lastEventAt = new Date().getTime();
         this.history.inputValue = inputValue;
         this.history.msg = input.getMessage().data;
 
@@ -94,38 +94,38 @@ export class ValueAction implements Action {
      * Generates an output for the given timestamp.
      */
     generateOutput(timestamp: number): Output {
-        let configuration = this.configuration;
-        let storage = this.storage;
+        const configuration = this.configuration;
+        const storage = this.storage;
 
-        let history = this.history;
-        history.lastUpdateAt = (new Date()).getTime();
+        const history = this.history;
+        history.lastUpdateAt = new Date().getTime();
 
         if (history.lastEventAt !== null && timestamp < history.lastEventAt) {
             timestamp = history.lastEventAt;
         }
 
-        let coordinates = storage.getCoordinates(timestamp);
+        const coordinates = storage.getCoordinates(timestamp);
         if (coordinates.length === 0) {
             return new Output();
         }
 
-        let interpolatedCoordinates = configuration.interpolator(coordinates, configuration.slotCount);
+        const interpolatedCoordinates = configuration.interpolator(coordinates, configuration.slotCount);
         let outputValue = configuration.outputMethod(interpolatedCoordinates);
         if (configuration.precision !== 'infinite') {
             outputValue = this.round(outputValue, configuration.precision);
         }
 
-        let isChanged = history.outputValue !== outputValue;
+        const isChanged = history.outputValue !== outputValue;
         history.outputValue = outputValue;
 
-        let result = new Output();
+        const result = new Output();
 
         if (configuration.output1Frequency === 'always' || (configuration.output1Frequency === 'changes' && isChanged)) {
             result.setValue('value', outputValue);
         }
 
         if (configuration.output2Frequency === 'always' || (configuration.output2Frequency === 'changes' && isChanged)) {
-            let baseMsg = {
+            const baseMsg = {
                 timestamp: timestamp,
                 [configuration.outputMethodCode]: outputValue,
             };
@@ -135,12 +135,12 @@ export class ValueAction implements Action {
 
         result.setNodeStatus({
             fill: 'green',
-            shape: (isChanged ? 'dot' : 'ring'),
+            shape: isChanged ? 'dot' : 'ring',
             text: `[${this.id}] ${this.format(storage.getEventCount())}+${this.format(storage.getHistoryCount())} ⇒ ${this.format(outputValue)}`,
         });
 
         return result;
-    };
+    }
 
     getId(): string {
         return this.id;
@@ -182,7 +182,7 @@ export class ValueAction implements Action {
         let value = null;
 
         for (let n = 0; n < interpolatedCoordinates.length; n++) {
-            let number = interpolatedCoordinates[n];
+            const number = interpolatedCoordinates[n];
             if (typeof number === 'undefined') {
                 continue;
             }
@@ -206,7 +206,7 @@ export class ValueAction implements Action {
     }
 
     private round(value: number, decimals: string): number {
-        return Number(Math.round(<number><unknown>(value + 'e' + decimals)) + 'e-' + decimals);
+        return Number(Math.round(<number>(<unknown>(value + 'e' + decimals))) + 'e-' + decimals);
     }
 
     private format(value: number): string {

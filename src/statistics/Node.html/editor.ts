@@ -1,5 +1,5 @@
-import type {EditorNodeProperties, EditorRED} from 'node-red';
-import type {UserConfigurationOptions} from '../UserConfiguration';
+import type { EditorNodeProperties, EditorRED } from 'node-red';
+import type { UserConfigurationOptions } from '../UserConfiguration';
 
 declare const RED: EditorRED;
 
@@ -90,30 +90,27 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
             required: true,
             validate: RED.validators.number(),
         },
-        name: {value: ''},
-        outputs: {value: 1},
+        name: { value: '' },
+        outputs: { value: 1 },
     },
     inputs: 1,
     icon: 'font-awesome/fa-list-ol',
-    label: function() {
+    label: function () {
         const duration = (this.slotCount || 15) * (this.slotResolutionNumber || 1);
         const unitName = this._('binsoul-statistics.option.resolution.' + this.slotResolutionUnit);
         const methodName = this._('binsoul-statistics.option.method.' + this.outputMethod);
         return this.name || `${methodName} (${duration} ${unitName})`;
     },
-    labelStyle: function() {
+    labelStyle: function () {
         return this.name ? 'node_label_italic' : '';
     },
     paletteLabel: 'statistics',
     inputLabels: 'Incoming message',
     outputLabels: ['Number output', 'Object output'],
-    oneditprepare: function() {
-        let node = this;
-        let output2FrequencyInput = $('#node-input-output2Frequency');
-        node.outputs = output2FrequencyInput.val() !== 'never' ? 2 : 1;
-        output2FrequencyInput.on('change', function() {
-            node.outputs = (<HTMLInputElement>this).value !== 'never' ? 2 : 1;
-        });
+    oneditprepare: function () {
+        const output2FrequencyInput = $('#node-input-output2Frequency');
+        this.outputs = output2FrequencyInput.val() !== 'never' ? 2 : 1;
+        output2FrequencyInput.on('change', (e: JQuery.TriggeredEvent) => (this.outputs = e.currentTarget.value !== 'never' ? 2 : 1));
 
         $('#node-input-inputValueProperty').typedInput({
             typeField: '#node-input-inputValueSource',
@@ -139,8 +136,7 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
             default: 'msg',
         });
     },
-    oneditsave: function() {
-        let node = this;
-        node.outputs = $('#node-input-output2Frequency').val() !== 'never' ? 2 : 1;
+    oneditsave: function () {
+        this.outputs = $('#node-input-output2Frequency').val() !== 'never' ? 2 : 1;
     },
 });

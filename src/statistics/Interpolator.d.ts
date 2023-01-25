@@ -1,4 +1,4 @@
-import {Coordinate} from './Coordinate';
+import { Coordinate } from './Coordinate';
 
 /**
  * Generates an array of numbers from the given coordinates.

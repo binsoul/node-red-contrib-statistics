@@ -1,4 +1,4 @@
-import type {Coordinate} from '../Coordinate';
+import type { Coordinate } from '../Coordinate';
 
 /**
  * Returns the Y value of all given coordinates if there X value is greater or equal zero.
@@ -8,9 +8,9 @@ export function noneInterpolator(coordinates: Array<Coordinate>): Array<number> 
         return Array(1).fill(null);
     }
 
-    let result = [];
+    const result = [];
     for (let index = 0; index < coordinates.length; index++) {
-        let coordinate = coordinates[index];
+        const coordinate = coordinates[index];
         if (typeof coordinate === 'undefined') {
             continue;
         }
