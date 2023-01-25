@@ -34,6 +34,10 @@ If there are slots without events this algorithm is used to fill them.
 
     The value of every event is repeated until a new event is received.
 
+-   `Linear`
+
+    Linear interpolation between event values.
+
 #### Fraction digits
 
 The output value is either rounded to this number of fraction digits or output without rounding.

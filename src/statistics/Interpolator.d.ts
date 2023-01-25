@@ -1,6 +1,11 @@
 import { Coordinate } from './Coordinate';
 
 /**
- * Generates an array of numbers from the given coordinates.
+ * Represents an interpolation algorithm.
  */
-export type Interpolator = (coordinates: Array<Coordinate>, numberOfSlots: number) => Array<number>;
+export interface Interpolator {
+    /**
+     * Generates an array of numbers from the given coordinates.
+     */
+    interpolate: (coordinates: Array<Coordinate>, numberOfSlots: number) => Array<number>;
+}

@@ -109,7 +109,7 @@ export class ValueAction implements Action {
             return new Output();
         }
 
-        const interpolatedCoordinates = configuration.interpolator(coordinates, configuration.slotCount);
+        const interpolatedCoordinates = configuration.interpolator.interpolate(coordinates, configuration.slotCount);
         let outputValue = configuration.outputMethod(interpolatedCoordinates);
         if (configuration.precision !== 'infinite') {
             outputValue = this.round(outputValue, configuration.precision);

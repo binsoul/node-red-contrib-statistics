@@ -1,24 +1,27 @@
 import type { Coordinate } from '../Coordinate';
+import type { Interpolator } from '../Interpolator';
 
 /**
  * Returns the Y value of all given coordinates if there X value is greater or equal zero.
  */
-export function noneInterpolator(coordinates: Array<Coordinate>): Array<number> {
-    if (coordinates.length === 0) {
-        return Array(1).fill(null);
-    }
-
-    const result = [];
-    for (let index = 0; index < coordinates.length; index++) {
-        const coordinate = coordinates[index];
-        if (typeof coordinate === 'undefined') {
-            continue;
+export class NoneInterpolator implements Interpolator {
+    interpolate(coordinates: Array<Coordinate>): Array<number> {
+        if (coordinates.length === 0) {
+            return Array(1).fill(null);
         }
 
-        if (coordinate.x >= 0) {
-            result.push(coordinate.y);
-        }
-    }
+        const result = [];
+        for (let index = 0; index < coordinates.length; index++) {
+            const coordinate = coordinates[index];
+            if (typeof coordinate === 'undefined') {
+                continue;
+            }
 
-    return result;
+            if (coordinate.x >= 0) {
+                result.push(coordinate.y);
+            }
+        }
+
+        return result;
+    }
 }
