@@ -14,7 +14,7 @@ export class LinearInterpolator extends AbstractInterpolator {
                 continue;
             }
 
-            for (let x = currentCoordinate.x; x <= nextCoordinate.x; x++) {
+            for (let x = Math.max(currentCoordinate.x, 0); x <= nextCoordinate.x; x++) {
                 const y1 = currentCoordinate.y;
                 const y2 = nextCoordinate.y;
                 const x1 = currentCoordinate.x;
