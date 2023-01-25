@@ -38,6 +38,10 @@ If there are slots without events this algorithm is used to fill them.
 
     Linear interpolation between event values.
 
+-   `Cosine`
+
+    Cosine interpolation between event values.
+
 #### Fraction digits
 
 The output value is either rounded to this number of fraction digits or output without rounding.

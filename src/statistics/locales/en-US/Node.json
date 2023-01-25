@@ -65,7 +65,8 @@
             "interpolation": {
                 "none": "No interpolation",
                 "stepAfter": "Step after",
-                "linear": "Linear"
+                "linear": "Linear",
+                "cosine": "Cosine"
             },
             "precision": {
                 "infinite": "no rounding",
