@@ -76,6 +76,7 @@ export class ActionFactory implements ActionFactoryInterface {
 
                     if (this.updateTimer !== null) {
                         clearTimeout(this.updateTimer);
+                        this.updateTimer = null;
                     }
 
                     return actions;
@@ -118,6 +119,7 @@ export class ActionFactory implements ActionFactoryInterface {
     teardown(): void {
         if (this.updateTimer !== null) {
             clearTimeout(this.updateTimer);
+            this.updateTimer = null;
         }
     }
 
