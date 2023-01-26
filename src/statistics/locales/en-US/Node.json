@@ -64,9 +64,16 @@
             },
             "interpolation": {
                 "none": "No interpolation",
+                "stepBefore": "Step before",
+                "stepMiddle": "Step middle",
                 "stepAfter": "Step after",
                 "linear": "Linear",
-                "cosine": "Cosine"
+                "cosine": "Cosine",
+                "cubic": "Cubic",
+                "catmullRom": "Catmull-Rom",
+                "hermiteLowTension": "Hermite (low tension)",
+                "hermiteNormalTension": "Hermite (normal tension)",
+                "hermiteHighTension": "Hermite (high tension)"
             },
             "precision": {
                 "infinite": "no rounding",
