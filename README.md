@@ -30,9 +30,17 @@ If there are slots without events this algorithm is used to fill them.
 
     Only the values of received events are used.
 
+-   `Step before`
+
+    The value of the next event is repeated from the next slot of the previous event.
+
+-   `Step middle`
+
+    The value of every event is repeated until the middle between this event and the next event .
+
 -   `Step after`
 
-    The value of every event is repeated until a new event is received.
+    The value of previous event is repeated until the previous slot of the next event.
 
 -   `Linear`
 
@@ -41,6 +49,26 @@ If there are slots without events this algorithm is used to fill them.
 -   `Cosine`
 
     Cosine interpolation between event values.
+
+-   `Cubic`
+
+    Cubic interpolation between event values.
+
+-   `Catmull-Rom`
+
+    Catmull-Rom interpolation between event values.
+
+-   `Hermite (low tension)`
+
+    Hermite interpolation between event values with a tension of -1.
+
+-   `Hermite (normal tension)`
+
+    Hermite interpolation between event values with a tension of 0.
+
+-   `Hermite (high tension)`
+
+    Hermite interpolation between event values with a tension of 1.
 
 #### Fraction digits
 
