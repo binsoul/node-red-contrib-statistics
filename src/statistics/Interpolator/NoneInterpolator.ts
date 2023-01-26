@@ -7,7 +7,7 @@ import type { Interpolator } from '../Interpolator';
 export class NoneInterpolator implements Interpolator {
     interpolate(coordinates: Array<Coordinate>): Array<number> {
         if (coordinates.length === 0) {
-            return Array(1).fill(null);
+            return [];
         }
 
         const result = [];
@@ -22,6 +22,6 @@ export class NoneInterpolator implements Interpolator {
             }
         }
 
-        return result;
+        return result.length > 0 ? result : [];
     }
 }
