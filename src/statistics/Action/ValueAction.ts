@@ -96,6 +96,7 @@ export class ValueAction implements Action {
     generateOutput(timestamp: number): Output {
         const configuration = this.configuration;
         const storage = this.storage;
+        const result = new Output();
 
         const history = this.history;
         history.lastUpdateAt = new Date().getTime();
@@ -106,10 +107,26 @@ export class ValueAction implements Action {
 
         const coordinates = storage.getCoordinates(timestamp);
         if (coordinates.length === 0) {
-            return new Output();
+            result.setNodeStatus({
+                fill: 'yellow',
+                shape: 'dot',
+                text: 'binsoul-statistics.status.noEvents',
+            });
+
+            return result;
         }
 
         const interpolatedCoordinates = configuration.interpolator.interpolate(coordinates, configuration.slotCount);
+        if (interpolatedCoordinates.length === 0) {
+            result.setNodeStatus({
+                fill: 'yellow',
+                shape: 'dot',
+                text: 'binsoul-statistics.status.noEvents',
+            });
+
+            return result;
+        }
+
         let outputValue = configuration.outputMethod(interpolatedCoordinates);
         if (configuration.precision !== 'infinite') {
             outputValue = this.round(outputValue, configuration.precision);
@@ -117,8 +134,6 @@ export class ValueAction implements Action {
 
         const isChanged = history.outputValue !== outputValue;
         history.outputValue = outputValue;
-
-        const result = new Output();
 
         if (configuration.output1Frequency === 'always' || (configuration.output1Frequency === 'changes' && isChanged)) {
             result.setValue('value', outputValue);
