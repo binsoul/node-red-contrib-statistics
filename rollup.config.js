@@ -11,7 +11,8 @@ const htmlWatch = () => {
         name: 'htmlWatch',
         load(id) {
             const editorDir = path.dirname(id);
-            const htmlFiles = glob.sync(path.join(editorDir, '*.html'));
+            const pattern = path.join(editorDir, '*.html').replace(/\\/g, '/');
+            const htmlFiles = glob.sync(pattern);
             htmlFiles.map((file) => this.addWatchFile(file));
         },
     };
@@ -22,7 +23,8 @@ const htmlBundle = () => {
         name: 'htmlBundle',
         renderChunk(code, chunk) {
             const editorDir = path.dirname(chunk.facadeModuleId);
-            const htmlFiles = glob.sync(path.join(editorDir, '*.html'));
+            const pattern = path.join(editorDir, '*.html').replace(/\\/g, '/');
+            const htmlFiles = glob.sync(pattern);
             const htmlContents = htmlFiles.map((fPath) => fs.readFileSync(fPath));
 
             code = '<script type="text/javascript">\n' + code + '\n' + '</script>\n' + htmlContents.join('\n');

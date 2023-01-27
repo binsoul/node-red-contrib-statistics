@@ -62,20 +62,20 @@
         "cross-env": "^7.0.3",
         "eslint": "^8.32.0",
         "eslint-config-prettier": "^8.6.0",
-        "glob": "^7.1.7",
+        "glob": "^8.1.0",
         "node-red": "^3.0.2",
         "nodemon": "^2.0.20",
         "onchange": "^7.1.0",
         "prettier": "^2.8.3",
         "prettier-plugin-organize-imports": "^3.2.2",
         "rimraf": "^4.1.2",
-        "rollup": "^3.10.0",
-        "tslib": "^2.4.1",
+        "rollup": "^3.11.0",
+        "tslib": "^2.5.0",
         "typescript": "^4.9.4"
     },
     "dependencies": {
-        "@binsoul/node-red-bundle-processing": "^0.0.1",
-        "simple-statistics": "^7.8.0"
+        "@binsoul/node-red-bundle-processing": "^0.0.2",
+        "simple-statistics": "^7.8.2"
     },
     "engines": {
         "node": ">=14.0.0"
