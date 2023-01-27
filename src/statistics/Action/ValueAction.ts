@@ -1,10 +1,6 @@
+import { Action, Input, InputDefinition, Output, OutputDefinition } from '@binsoul/node-red-bundle-processing';
 import type { NodeMessage } from 'node-red';
 import type { Configuration } from '../Configuration';
-import type { Action } from '../Processing/Action';
-import type { Input } from '../Processing/Input';
-import { InputDefinition } from '../Processing/InputDefinition';
-import { Output } from '../Processing/Output';
-import { OutputDefinition } from '../Processing/OutputDefinition';
 import { Storage } from '../Storage';
 
 interface History {

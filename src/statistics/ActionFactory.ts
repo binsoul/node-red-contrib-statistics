@@ -1,3 +1,4 @@
+import { Action, ActionFactory as ActionFactoryInterface, Message } from '@binsoul/node-red-bundle-processing';
 import type { Node, NodeAPI } from '@node-red/registry';
 import type { NodeMessageInFlow } from 'node-red';
 import { clearTimeout, setTimeout } from 'timers';
@@ -5,9 +6,6 @@ import { ClearAction } from './Action/ClearAction';
 import { UpdateAction } from './Action/UpdateAction';
 import { ValueAction } from './Action/ValueAction';
 import type { Configuration } from './Configuration';
-import type { Action } from './Processing/Action';
-import type { ActionFactory as ActionFactoryInterface } from './Processing/ActionFactory';
-import type { Message } from './Processing/Message';
 
 interface MessageData extends NodeMessageInFlow {
     command?: string;

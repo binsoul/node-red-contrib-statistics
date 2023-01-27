@@ -1,7 +1,7 @@
+import { MessageHandler } from '@binsoul/node-red-bundle-processing';
 import type { Node, NodeInitializer } from 'node-red';
 import { ActionFactory } from './ActionFactory';
 import { buildConfiguration } from './ConfigurationBuilder';
-import { MessageHandler } from './Processing/MessageHandler';
 import type { UserConfiguration } from './UserConfiguration';
 
 const nodeInitializer: NodeInitializer = (RED): void => {

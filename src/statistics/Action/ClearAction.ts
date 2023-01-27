@@ -1,8 +1,5 @@
+import { Action, InputDefinition, Output, OutputDefinition } from '@binsoul/node-red-bundle-processing';
 import type { I18nTFunction } from '@node-red/util';
-import type { Action } from '../Processing/Action';
-import { InputDefinition } from '../Processing/InputDefinition';
-import { Output } from '../Processing/Output';
-import { OutputDefinition } from '../Processing/OutputDefinition';
 import type { ValueAction } from './ValueAction';
 
 /**

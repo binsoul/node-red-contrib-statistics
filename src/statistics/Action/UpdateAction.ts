@@ -1,9 +1,5 @@
+import { Action, Input, InputDefinition, Output, OutputDefinition } from '@binsoul/node-red-bundle-processing';
 import type { Configuration } from '../Configuration';
-import type { Action } from '../Processing/Action';
-import type { Input } from '../Processing/Input';
-import { InputDefinition } from '../Processing/InputDefinition';
-import type { Output } from '../Processing/Output';
-import type { OutputDefinition } from '../Processing/OutputDefinition';
 import type { ValueAction } from './ValueAction';
 
 /**
