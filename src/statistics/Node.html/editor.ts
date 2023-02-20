@@ -9,7 +9,7 @@ interface NodeEditorProperties extends EditorNodeProperties, UserConfigurationOp
 
 RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
     category: 'function',
-    color: '#A6BBCF',
+    color: '#8DC1D8',
     defaults: {
         outputMethod: {
             value: 'mean',
