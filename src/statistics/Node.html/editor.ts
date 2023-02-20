@@ -108,6 +108,14 @@ RED.nodes.registerType<NodeEditorProperties>('binsoul-statistics', {
     inputLabels: 'Incoming message',
     outputLabels: ['Number output', 'Object output'],
     oneditprepare: function () {
+        setTimeout(() => {
+            $('.binsoul-statistics-wrapper').css('width', '100%');
+            $('.binsoul-statistics-wrapper .red-ui-typedInput-container').css({
+                width: 'auto',
+                display: 'flex',
+            });
+        });
+
         const output2FrequencyInput = $('#node-input-output2Frequency');
         this.outputs = output2FrequencyInput.val() !== 'never' ? 2 : 1;
         output2FrequencyInput.on('change', (e: JQuery.TriggeredEvent) => (this.outputs = e.currentTarget.value !== 'never' ? 2 : 1));
